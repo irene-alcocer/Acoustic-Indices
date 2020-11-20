@@ -1,0 +1,16 @@
+.showopt {
+  background-color: #EEEEEE;
+  color: black; 
+  width: 20%;
+  margin-left: 35%;
+  margin-right: 35%;
+  text-align: center;
+  vertical-align: middle !important;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
