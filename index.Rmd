@@ -119,7 +119,7 @@ kable(df_tidy, format = "html") %>%
 <br>
 
 <div id="fig-caption">
-  <b>Table S2 -</b> Variable descriptions for Table S1.
+  <b>Table S2 -</b> Variable descriptions for Table S2.
 </div>
 ```{r variable_description}
 vd <- data.frame(Variables = c("id", "entry", "journal", "year", "impact_factor", "index",
@@ -658,7 +658,7 @@ plt_text <- paste0("Regression test for plot symmetry \n\t\t  p = ", eggers_roun
 legend(legend = plt_text, x = 0.5, y = -0.01, bg = alpha("darkgrey", 0.2))
 ```
 <div id="fig-caption">
-  <b>Figure S7 -</b> Funnel plot (dashed triangle) with the relation between model residuals from the meta-regression model, and effect size standard error. Absence of publication bias is represented by a scattered and symmetric distribution of values (blue hollow dots) within the funnel. The box on the top right is the p-value from Egger's regression, which means that we failed to reject the null hypothesis of funnel symmetry (p = 0.53).
+  <b>Figure S8 -</b> Funnel plot (dashed triangle) with the relation between model residuals from the meta-regression model, and effect size standard error. Absence of publication bias is represented by a scattered and symmetric distribution of values (blue hollow dots) within the funnel. The box on the top right is the p-value from Egger's regression, which means that we failed to reject the null hypothesis of funnel symmetry (p = 0.53).
 </div>
 
 *Output of Egger's regression.*
@@ -711,7 +711,7 @@ ggplot(data = df_pseudorep, aes(x = pseudoreplication, y = z2r(z))) +
   )
 ```
 <div id="fig-caption">
-<b>Figure S8 -</b> Boxplot comparing effect size mean values of sampling designs considered pseudoreplicated ("Yes" on the vertical axis) against sampling designs not considered pseudoreplicated ("No" on the vertical axis). The circles represent each individual effect size mean value, and the circle size indicates the relative sample size of the effect size. The dashed green vertical line shows the position of summary effect size obtained from the intercept only meta-analysis.
+<b>Figure S9 -</b> Boxplot comparing effect size mean values of sampling designs considered pseudoreplicated ("Yes" on the vertical axis) against sampling designs not considered pseudoreplicated ("No" on the vertical axis). The circles represent each individual effect size mean value, and the circle size indicates the relative sample size of the effect size. The dashed green vertical line shows the position of summary effect size obtained from the intercept only meta-analysis.
 </div>
 
 <br> 
@@ -759,7 +759,7 @@ ggplot(data = df_cooks, aes(x = authors, y = cooks_dist, group = 1)) +
 
 ```
 <div id="fig-caption">
-<b>Figure S9 -</b> Cook's distance values for each study (blue dots on the figure) and average Cook's distance over all studies indicated as a dashed vertical red line. The Cook's distance for a given study can be interpreted as the distance between the entire set of predicted values once with this study included and once with the this study excluded from the model fitting procedure. On the y-axis are the studies identified by first author and year. The x-axis corresponds to the Cook's distance values.
+<b>Figure S10 -</b> Cook's distance values for each study (blue dots on the figure) and average Cook's distance over all studies indicated as a dashed vertical red line. The Cook's distance for a given study can be interpreted as the distance between the entire set of predicted values once with this study included and once with the this study excluded from the model fitting procedure. On the y-axis are the studies identified by first author and year. The x-axis corresponds to the Cook's distance values.
 </div>
 
 ### Check outlier studies
@@ -789,7 +789,7 @@ ggplot(data = df_outliers, aes(x = z2r(z), y = id)) +
 
 ```
 <div id="fig-caption">
-<b>Figure S10 -</b> Boxplot and distribution of of effect size values (dots) of the two studies identified as outliers. The y-axis identifies the study, and the x-axis corresponds to the Pearson r effect size. The green vertical dashed line is the summary effect obtained in the intercept-only model.
+<b>Figure S11 -</b> Boxplot and distribution of of effect size values (dots) of the two studies identified as outliers. The y-axis identifies the study, and the x-axis corresponds to the Pearson r effect size. The green vertical dashed line is the summary effect obtained in the intercept-only model.
 </div>
 
 <br>
@@ -856,7 +856,7 @@ ggplot(data = df_examine_outliers, aes(x = estimate, y = coef, color = df, posit
     )
 ```
 <div id="fig-caption">
-<b>Figure S11 -</b> Contrast of model estimates obtained with meta-regression analysis over the full dataset (yellow) and over the dataset with outliers removed (blue). Mean estimates are represented with circles and corresponding 95% confidence intervals with horizontal lines. We considered outliers every study that had a Cook's distance value higher than the mean of all Cook distances. Model moderators were acoustic indices (ADI, AEI, AR, BIO, H, NDSI, with ACI as intercept), diversity metric (Abundance, Diversity, Sound abundance, with Richness as intercept), environment (Aquatic, with Terrestrial as intercept), diversity source (Acoustic, with Non-Acoustic as intercept). The solid vertical black line represents a null effect size.
+<b>Figure S12 -</b> Contrast of model estimates obtained with meta-regression analysis over the full dataset (yellow) and over the dataset with outliers removed (blue). Mean estimates are represented with circles and corresponding 95% confidence intervals with horizontal lines. We considered outliers every study that had a Cook's distance value higher than the mean of all Cook distances. Model moderators were acoustic indices (ADI, AEI, AR, BIO, H, NDSI, with ACI as intercept), diversity metric (Abundance, Diversity, Sound abundance, with Richness as intercept), environment (Aquatic, with Terrestrial as intercept), diversity source (Acoustic, with Non-Acoustic as intercept). The solid vertical black line represents a null effect size.
 </div>
 
 <br>
@@ -903,7 +903,7 @@ ggplot(df_tidy, aes(x = year, y = z2r(z))) +
     )
 ```
 <div id="fig-caption">
-<b>Figure S12 -</b> Relation between effect size mean values (circles) and publication year. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the publication year axis with minor random noise to reduce overlapping.
+<b>Figure S13 -</b> Relation between effect size mean values (circles) and publication year. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the publication year axis with minor random noise to reduce overlapping.
 </div>
 
 ### Publication year > 2015
@@ -933,7 +933,7 @@ ggplot(df_tidy_after2015, aes(x = year, y = z2r(z))) +
     )
 ```
 <div id="fig-caption">
-<b>Figure S13 -</b> Relation between effect size mean values (circles) and publication year after 2015 (inclusive) where there is a sudden and prominent rise of publications. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the publication year axis with minor random noise to reduce overlapping.
+<b>Figure S14 -</b> Relation between effect size mean values (circles) and publication year after 2015 (inclusive) where there is a sudden and prominent rise of publications. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the publication year axis with minor random noise to reduce overlapping.
 </div>
 
 ### Impact factor
@@ -959,7 +959,7 @@ ggplot(df_tidy, aes(x = impact_factor, y = z2r(z))) +
     )
 ```
 <div id="fig-caption">
-<b>Figure S14 -</b> Relation between effect size mean values (circles) and journal impact factor. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the impact factor axis with minor random noise to reduce overlapping.
+<b>Figure S15 -</b> Relation between effect size mean values (circles) and journal impact factor. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the impact factor axis with minor random noise to reduce overlapping.
 </div>
 
 # Supplementary data
