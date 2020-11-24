@@ -51,7 +51,7 @@ We extensively searched existing literature for studies assessing the use of aco
 
 Both peer-reviewed and no peer-reviewed studies were included to avoid publication bias.
 
-After removing all duplicates, we gathered a total of 1,038 studies.
+After removing all duplicates, we gathered a total of 1,039 studies.
 
 
 ## Inclusion criteria
@@ -61,7 +61,14 @@ We considered studies eligible for meta-analysis if they met the following inclu
 - The study provided statistical or graphical information of the direct relationship between biological diversity and acoustic diversity.
 - We only considered studies using the 11 most common alpha acoustic indices (ACI, ADI, AEI, AR, BIO, ,H, Hf, Ht, M, NDSI, NP).
 
-Following such inclusion criteria, we screened all selected studies (n = 1,038) based on their abstract, titles and keywords and thereby retaining 142 studies that were identified as potentially eligible. To ascertain their relevance, we conducted a full-text assessment on all these studies, finally retaining 34 studies that passed through all the criteria. 
+Following such inclusion criteria, we screened all selected studies (n = 1,039) based on their abstract, titles and keywords and thereby retaining 142 studies that were identified as potentially eligible. To ascertain their relevance, we conducted a full-text assessment on all these studies, finally retaining 35 studies that passed through all the criteria. 
+
+```{r temporal.evo}
+knitr::include_graphics("rmd/Fig.S1.png")
+```
+<div id="fig-caption">
+  <b>Figure S1 -</b> Temporal evolution (2007 – 2019) of the validation data from the total of 142 articles. Articles which correlate the acoustic indices with real biological data are represented with an orange line and studies which do not correlate with a green line
+</div>
 
 ## Data extraction
 
@@ -211,25 +218,24 @@ knitr::include_graphics("rmd/mapa.png")
 
 <br>
 
-The performance of acoustic indices as a biodiversity indicators was mainly assessed with species richness and sound abundance as biodiversity metrics.
-
-```{r lollyplot1, out.height = "80%", out.width = "80%"}
-knitr::include_graphics("rmd/Fig.S3a.jpg")
+The performance of acoustic indices as a biodiversity indicators was mainly assessed with species richness and sound abundance as biodiversity metrics. 
+```{r heatmap}
+knitr::include_graphics("rmd/heatmap.png")
 ```
 <div id="fig-caption">
-  <b>Figure S2 -</b> Number of studies per acoustic index classified by the diversity measure used to assess the correlation between the acoustic index and biodiversity.
+  <b>Figure S2 -</b> Distribution of the 35 articles by biodiversity parameters, taxa and acoustic indices studied. The graph shows the number of articles for each biodiversity parameter and taxonomic group for the each acoustic indices.
 </div>
 
 <br>
 
-Most studies collected in our dataset assessed the relation between acoustic indices and biodiversity using recordings of bird sounds.
-
-```{r lollyplot2, out.height = "80%", out.width = "80%"}
-knitr::include_graphics("rmd/Fig.S3b.jpg")
+A large set of studies (40%) exhibited statistical deficiencies in testing the relationship between acoustic indices and biodiversity estimates due to pseudoreplication.
+```{r ps.index}
+knitr::include_graphics("rmd/ps.index.png")
 ```
 <div id="fig-caption">
-  <b>Figure S3 -</b> Number of studies per acoustic index classified by their studied taxon.
+  <b>Figure S3 -</b> Pseudoreplication summary. The data is representing the total number of articles for each index. Color orange represents number of pseudo-replicated studies and green non pseudo-replicated studies. The article (Papin et al., 2019b) was withdrawal from the pseudoreplication analysis due to impossibility of obtain the pseudoreplication data causing some variation on the total number of each acoustic index..
 </div>
+
 
 # Meta-analysis
 
