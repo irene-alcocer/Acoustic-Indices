@@ -6,11 +6,12 @@ tidy_data <- function(df, n_used = "n_adjusted", rm_id = 54,
                       independent_days = TRUE, rm_lt_4 = FALSE){
     
     # Select relevant columns
-    df <- select(df, id = ID, Year, Impact_factor, index = Index, 
-                 taxa, environ = A_T, bio, diversity_source = Diversity_source, 
-                 n_original = N_ID, replication_type = pseudoreplication_type, 
+    df <- select(df, id = ID, Year, Impact_factor = Impact.factor, index = Acoustic.Indices, 
+                 taxa = Taxonomic.group, environ = Environment, bio = Biodiversity.parameter, 
+                 diversity_source = Diversity.source, 
+                 n_original = sample.size, replication_type = pseudoreplication_type, 
                  pseudoreplication = Pseudoreplication, 
-                 pseudoreplication_type, n_adjusted = N_fixed, 
+                 pseudoreplication_type = Pseudoreplication.type, n_adjusted = Adjusted.sample.size, 
                  intermediate_group, Statistical_test, r, t)
     
     # Correct spearman correlations
