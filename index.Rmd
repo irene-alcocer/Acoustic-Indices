@@ -229,7 +229,7 @@ knitr::include_graphics("rmd/heatmap.png")
 <br>
 
 A large set of studies (40%) exhibited statistical deficiencies in testing the relationship between acoustic indices and biodiversity estimates due to pseudoreplication.
-```{r ps.index, out.width = "70%", out.height = "70%"}
+```{r ps.index, out.width = "70%", out.height = "70%", fig.align = "center"}
 knitr::include_graphics("rmd/ps.index.png")
 ```
 <div id="fig-caption">
@@ -342,7 +342,7 @@ kable(Is_df, format = "html", digits = 2) %>%
 mlm.variance.distribution(res_main)
 ```
 <div id="fig-caption">
-  <b>Supplementary Figure 6 -</b> Visual representation of how variance was distributed over the multilevel structure of the intercept-only model. Within study heterogeneity (level 2) corresponds to the unnacounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unnacounted variation between studies (level 3).
+  <b>Supplementary Figure 5 -</b> Visual representation of how variance was distributed over the multilevel structure of the intercept-only model. Within study heterogeneity (level 2) corresponds to the unnacounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unnacounted variation between studies (level 3).
 </div>
 
 <br>
@@ -534,7 +534,7 @@ ggplot(data = df_pred, aes(x = z2r(estimate), y = coef, color = moderators)) +
 
 ```
 <div id="fig-caption">
-  <b>Supplementary Figure 8 -</b> Effect size mean estimates (circles) and corresponding 95% confidence intervals (horizontal lines) obtained from meta-regression analysis with moderators: acoustic indices (Index), biodiversity metrics (Bio), environment (Environment) and acoustic source (Source). Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero.
+  <b>Supplementary Figure 6 -</b> Effect size mean estimates (circles) and corresponding 95% confidence intervals (horizontal lines) obtained from meta-regression analysis with moderators: acoustic indices (Index), biodiversity metrics (Bio), environment (Environment) and acoustic source (Source). Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero.
 </div>
 
 <br>
@@ -765,7 +765,7 @@ ggplot(data = df_cooks, aes(x = authors, y = cooks_dist, group = 1)) +
 
 ```
 <div id="fig-caption">
-<b>Supplementary Figure 11 -</b> Cook's distance values for each study (blue dots on the figure) and average Cook's distance over all studies indicated as a dashed vertical red line. The Cook's distance for a given study can be interpreted as the distance between the entire set of predicted values once with this study included and once with the this study excluded from the model fitting procedure. On the y-axis are the studies identified by first author and year. The x-axis corresponds to the Cook's distance values.
+<b>Supplementary Figure 7 -</b> Cook's distance values for each study (blue dots on the figure) and average Cook's distance over all studies indicated as a dashed vertical red line. The Cook's distance for a given study can be interpreted as the distance between the entire set of predicted values once with this study included and once with the this study excluded from the model fitting procedure. On the y-axis are the studies identified by first author and year. The x-axis corresponds to the Cook's distance values.
 </div>
 
 ### Check outlier studies
@@ -795,7 +795,7 @@ ggplot(data = df_outliers, aes(x = z2r(z), y = id)) +
 
 ```
 <div id="fig-caption">
-<b>Supplementary Figure 12 -</b> Boxplot and distribution of of effect size values (dots) of the two studies identified as outliers. The y-axis identifies the study, and the x-axis corresponds to the Pearson r effect size. The green vertical dashed line is the summary effect obtained in the intercept-only model.
+<b>Supplementary Figure 8 -</b> Boxplot and distribution of of effect size values (dots) of the two studies identified as outliers. The y-axis identifies the study, and the x-axis corresponds to the Pearson r effect size. The green vertical dashed line is the summary effect obtained in the intercept-only model.
 </div>
 
 <br>
@@ -965,7 +965,7 @@ ggplot(df_tidy, aes(x = impact_factor, y = z2r(z))) +
     )
 ```
 <div id="fig-caption">
-<b>Supplementary Figure 16 -</b> Relation between effect size mean values (circles) and journal impact factor. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the impact factor axis with minor random noise to reduce overlapping.
+<b>Supplementary Figure 9 -</b> Relation between effect size mean values (circles) and journal impact factor. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the impact factor axis with minor random noise to reduce overlapping.
 </div>
 
 # Supplementary data
