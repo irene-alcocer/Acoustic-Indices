@@ -30,17 +30,17 @@ end
 
 fig_nr = 1
 table_nr = 1
-fig_regex =  r"(.*Figure S)(\d+)(.*)"
-table_regex =  r"(.*Table S)(\d+)(.*)"
+fig_regex =  r"(^\s*<b>\s?Supplementary Figure)\s+(\d+)(.*)"
+table_regex =  r"(^\s*<b>\s?Supplementary Table)\s+(\d+)(.*)"
 for line in lines
     if occursin(table_regex, line)
         replaced_number = replace(line, table_regex => 
-                                  SubstitutionString("\\g<1>$(table_nr)\\g<3>"))
+                                  SubstitutionString("\\g<1> $(table_nr)\\g<3>"))
         global table_nr += 1
         write(fw, replaced_number)
     elseif occursin(fig_regex, line)
         replaced_number = replace(line, fig_regex => 
-                                  SubstitutionString("\\g<1>$(fig_nr)\\g<3>"))
+                                  SubstitutionString("\\g<1> $(fig_nr)\\g<3>"))
         global fig_nr += 1
         write(fw, replaced_number)
     else
@@ -51,7 +51,7 @@ end
 close(fw)
 
 if overwrite
-    mv(file_path, file_path * ".backup")
+    mv(file_path, file_path * ".backup", force = true)
     mv(new_file, file_path)
 end
 
