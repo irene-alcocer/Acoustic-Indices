@@ -30,7 +30,6 @@ csl: "biological-reviews.csl"
     require(stringr)
     require(metafor)
     require(compute.es)
-    require(MuMIn); eval(metafor:::.MuMIn)
     require(kableExtra)
     require(pander)
     require(ggplot2)
@@ -116,7 +115,7 @@ We collected a total of 481 effect sizes from 35 studies. These number was reduc
 </div>
 
 <div id="fig-caption">
-  <b>Supplementary Table  1 -</b> Complete dataset used in meta-analysis.
+  <b>Supplementary Table 1 -</b> Complete dataset used in meta-analysis.
 </div>
 ```{r dataset}
 kable(df_tidy, format = "html") %>%
@@ -126,7 +125,7 @@ kable(df_tidy, format = "html") %>%
 <br>
 
 <div id="fig-caption">
-  <b>Supplementary Table  2 -</b> Variable descriptions for Supplementary Table  2.
+  <b>Supplementary Table 2 -</b> Variable descriptions for Supplementary Table  1.
 </div>
 ```{r variable_description}
 vd <- data.frame(Variables = c("id", "entry", "journal", "year", "impact_factor", "index",
@@ -162,7 +161,7 @@ In what follows, we give a brief overview of the dataset mostly by way of tables
 Our dataset comprised a total of 34 studies and 364 effect sizes. Therefore, most studies contributed with more than one effect size for the meta-analysis.
 
 <div id="fig-caption">
-  <b>Supplementary Table  3 -</b> Number of effect sizes collected from each of the 34 studies included in the meta-analysis. ID corresponds to the study identification number in our dataset.
+  <b>Supplementary Table 3 -</b> Number of effect sizes collected from each of the 34 studies included in the meta-analysis. ID corresponds to the study identification number in our dataset.
 </div>
 ```{r samplesizes_tables_studies}
 studies_n <- as.data.frame(table(df_tidy$id), stringsAsFactors = FALSE)
@@ -181,7 +180,7 @@ kable(studies_n, format = "html") %>%
 The most studied acoustic index was ACI and the most used biodiversity metric was 'species richness'.
 
 <div id="fig-caption">
-  <b>Supplementary Table  4 -</b> Number of effect sizes and studies per moderator levels.
+  <b>Supplementary Table 4 -</b> Number of effect sizes and studies per moderator levels.
 </div>
 ```{r samplesizes_tables_moderators}
 # Table for moderator levels
@@ -254,7 +253,7 @@ res_main
 </div>
 
 <div id="fig-caption">
-  <b>Supplementary Table  5 -</b> Resulting estimates from intercept-only model converted to Pearson's correlation. "Estimate" is the Pearson's r summary effect size. "CI.lb" and "CI.ub" are the confidence intervals lower and upper bounds, respectively.
+  <b>Supplementary Table 5 -</b> Resulting estimates from intercept-only model converted to Pearson's correlation. "Estimate" is the Pearson's r summary effect size. "CI.lb" and "CI.ub" are the confidence intervals lower and upper bounds, respectively.
 </div>
 ```{r meta_overall_r, }
 r_main <- sapply(c(r = res_main$b, CI.lb = res_main$ci.lb, CI.ub = res_main$ci.ub), z2r)
@@ -317,7 +316,7 @@ We quantified heterogeneity with the I² statistic, which estimates the proporti
 <br> 
 
 <div id="fig-caption">
-  <b>Supplementary Table  6 -</b> Unnacounted heterogeneity of the intercept-only model as measured by I^2^ statistic. Within study heterogeneity (level 2) corresponds to the unnacounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unnacounted variation between studies (level 3).
+  <b>Supplementary Table 6 -</b> Unnacounted heterogeneity of the intercept-only model as measured by I^2^ statistic. Within study heterogeneity (level 2) corresponds to the unnacounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unnacounted variation between studies (level 3).
 </div>
 ```{r meta_hetero}
 font_css <- "font-family: Arial"
@@ -374,7 +373,7 @@ res_indices
 
 
 <div id="fig-caption">
-  <b>Supplementary Table  7 -</b> Resulting estimates from sub-group analysis. The 'Estimate' column is the Pearson correlation effect size; SE is the standard error and CI.lb and CI.up, the lower and upper bounds of the confidence intervals, respectively.
+  <b>Supplementary Table 7 -</b> Resulting estimates from sub-group analysis. The 'Estimate' column is the Pearson correlation effect size; SE is the standard error and CI.lb and CI.up, the lower and upper bounds of the confidence intervals, respectively.
 </div>
 ```{r meta_indices_tbl, align = "center"}
 df_pred_indices <- get_predictions(res_indices, intercept = FALSE)
@@ -462,7 +461,7 @@ res_full
 Multicollinearity among our moderators was inspected with VIF and found not to be an issue in our model (VIF < 1.7 for all moderators – threshold value of 3 [@zuur2010protocol].
 
 <div id="fig-caption">
-  <b>Supplementary Table  8 -</b> VIF values obtained for each moderator level.
+  <b>Supplementary Table 8 -</b> VIF values obtained for each moderator level.
 </div>
 ```{r collinearity}
 vif_meta <- as.data.frame(vif.rma(res_full))
@@ -497,7 +496,7 @@ cat("Heterogenity after fitting the full model\n\t", sum_I_full, "\n\n",
 #### **Full model results**
 
 <div id="fig-caption">
-  <b>Supplementary Table  9 -</b> Meta-regression results. The column "Coefficients" lists the model intercept and the levels of each moderator. The column "Estimate" is the estimated Pearson (r) correlation. "SE" is the standard error of the estimate. "CI" are the [lower] [upper] bounds of the confidence intervals.
+  <b>Supplementary Table 9 -</b> Meta-regression results. The column "Coefficients" lists the model intercept and the levels of each moderator. The column "Estimate" is the estimated Pearson (r) correlation. "SE" is the standard error of the estimate. "CI" are the [lower] [upper] bounds of the confidence intervals.
 </div>
 ```{r mod_level_estimates}
 df_pred_tbl <- get_predictions(res_full, format_table = TRUE, clean_labels = TRUE)
@@ -544,7 +543,7 @@ ggplot(data = df_pred, aes(x = z2r(estimate), y = coef, color = moderators)) +
 We checked if our choice of moderators explained some of the variation in our effects sizes by  computing a Wald-type test on the null hypothesis that moderator levels' estimates are jointly equal to zero [@viechtbauer2015comparison]. 
 
 <div id="fig-caption">
-  <b>Supplementary Table  10 -</b> Wald-type tests for all moderators (first row), and for each moderator separately (remaining rows). "Q" is the Wald statistic. "df" are the degrees of freedom. "p" is the probability that moderator estimates came from a chi-square distribution, where all estimates are equal to zero. So a p-value < 0.05 gives support against the null hypothesis that moderator levels estimates are equal to zero (i.e. they do not explain variation in effect sizes).
+  <b>Supplementary Table 10 -</b> Wald-type tests for all moderators (first row), and for each moderator separately (remaining rows). "Q" is the Wald statistic. "df" are the degrees of freedom. "p" is the probability that moderator estimates came from a chi-square distribution, where all estimates are equal to zero. So a p-value < 0.05 gives support against the null hypothesis that moderator levels estimates are equal to zero (i.e. they do not explain variation in effect sizes).
 </div>
 ```{r test_moderators}
 imp_mods <- matrix(nrow = length(mods) + 1, ncol = 4, 
@@ -586,7 +585,7 @@ The pairwise-comparison for H index, suggest that the H index correlates better 
 <br>
 
 <div id="fig-caption">
-  <b>Supplementary Table  11 -</b> Wald-type tests for the constrasts between acoustic index H with all other acoustic indices. The column "Compared" expresses the comparison, in this cases it is the difference between the estimate H and the estimate of each of the other acoustic indices. The column "Estimate" is the estimate obtained from the difference expressed in the previous column. "SE" is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively. "QM" is the Wald statistic. "p" is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the H index and the estimate of the other index.
+  <b>Supplementary Table 11 -</b> Wald-type tests for the constrasts between acoustic index H with all other acoustic indices. The column "Compared" expresses the comparison, in this cases it is the difference between the estimate H and the estimate of each of the other acoustic indices. The column "Estimate" is the estimate obtained from the difference expressed in the previous column. "SE" is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively. "QM" is the Wald statistic. "p" is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the H index and the estimate of the other index.
 </div>
 ```{r compare_indices_H}
 # Test differences between H and other indices
@@ -603,7 +602,7 @@ The pairwise-comparison for NDSI index, suggest that the NDSI index correlates b
 <br> 
 
 <div id="fig-caption">
-  <b>Supplementary Table  12 -</b> Wald-type tests for the constrasts between acoustic index NDSI with all other acoustic indices. The column "Compared" expresses the comparison, in this cases it is the difference between the estimate NDSI and the estimate of each of the other acoustic indices. The column "Estimate" is the estimate obtained from the difference expressed in the previous column. "SE" is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively. "QM" is the Wald statistic. "p" is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the NDSI index and the estimate of the other index.
+  <b>Supplementary Table 12 -</b> Wald-type tests for the constrasts between acoustic index NDSI with all other acoustic indices. The column "Compared" expresses the comparison, in this cases it is the difference between the estimate NDSI and the estimate of each of the other acoustic indices. The column "Estimate" is the estimate obtained from the difference expressed in the previous column. "SE" is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively. "QM" is the Wald statistic. "p" is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the NDSI index and the estimate of the other index.
 </div>
 ```{r compare_indices_NDSI}
 # Test differences between NDSI and other indices
@@ -621,7 +620,7 @@ The pairwise-comparison for sound abundance gave marginal support (at p < 0.05) 
 <br>
 
 <div id="fig-caption">
-  <b>Supplementary Table  13 -</b> Wald-type tests for the contrasts between the biodiversity metric sound abundance with all other biodiversity metrics. The column "Compared" expresses the comparison, in this cases it is the difference between the estimate sound abundance and the estimate of each of the other biodiversity metrics. The column "Estimate" is the estimate obtained from the difference expressed in the previous column. "SE" is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively. "QM" is the Wald statistic. "p" is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the sound abundance metric and the estimate of the other metric.
+  <b>Supplementary Table 13 -</b> Wald-type tests for the contrasts between the biodiversity metric sound abundance with all other biodiversity metrics. The column "Compared" expresses the comparison, in this cases it is the difference between the estimate sound abundance and the estimate of each of the other biodiversity metrics. The column "Estimate" is the estimate obtained from the difference expressed in the previous column. "SE" is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively. "QM" is the Wald statistic. "p" is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the sound abundance metric and the estimate of the other metric.
 </div>
 ```{r compare_bio}
 # Test difference between sound_abundance and other bio levels

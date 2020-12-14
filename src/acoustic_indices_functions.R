@@ -9,9 +9,10 @@ tidy_data <- function(df, n_used = "n_adjusted", rm_id = 54,
     df <- select(df, id = ID, Year, Impact_factor = Impact.factor, index = Acoustic.Indices, 
                  taxa = Taxonomic.group, environ = Environment, bio = Biodiversity.parameter, 
                  diversity_source = Diversity.source, 
-                 n_original = sample.size, replication_type = pseudoreplication_type, 
+                 n_original = sample.size, 
                  pseudoreplication = Pseudoreplication, 
-                 pseudoreplication_type = Pseudoreplication.type, n_adjusted = Adjusted.sample.size, 
+                 pseudoreplication_type = Pseudoreplication.type, 
+                 n_adjusted = Adjusted.sample.size, 
                  intermediate_group, Statistical_test, r, t)
     
     # Correct spearman correlations
