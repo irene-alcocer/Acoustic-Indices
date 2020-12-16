@@ -13,7 +13,7 @@ tidy_data <- function(df, n_used = "n_adjusted", rm_id = 54,
                  pseudoreplication = Pseudoreplication, 
                  pseudoreplication_type = Pseudoreplication.type, 
                  n_adjusted = Adjusted.sample.size, 
-                 intermediate_group = Independance, Statistical_test, r, t)
+                 intermediate_group = Independence, Statistical_test, r, t)
     
     # Correct spearman correlations
     spearman <- select(df[df$Statistical_test == "spearman", ], r, .data[[n_used]])
