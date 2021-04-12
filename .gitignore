@@ -1,5 +1,9 @@
-index_cache*
-index_files*
+*_cache*
+*_files*
 .Rhistory
 .RData
 *.backup
+*tex
+*aux
+*log
+*utf*

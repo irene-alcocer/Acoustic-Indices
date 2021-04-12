@@ -312,7 +312,7 @@ We quantified heterogeneity with the I² statistic, which estimates the proporti
 <br> 
 
 <div id="fig-caption">
-  <b>Supplementary Table 6 -</b> Uncounted heterogeneity of the intercept-only model as measured by I^2^ statistic. Within study heterogeneity (level 2) corresponds to the uncounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the uncounted variation between studies (level 3).
+  <b>Supplementary Table 6 -</b> Unaccounted heterogeneity of the intercept-only model as measured by I^2^ statistic. Within study heterogeneity (level 2) corresponds to the unaccounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unaccounted variation between studies (level 3).
 </div>
 ```{r meta_hetero}
 font_css <- "font-family: Arial"
@@ -337,12 +337,12 @@ kable(Is_df, format = "html", digits = 2) %>%
 mlm.variance.distribution(res_main)
 ```
 <div id="fig-caption">
-  <b>Supplementary Figure 5 -</b> Visual representation of how variance was distributed over the multilevel structure of the intercept-only model. Within study heterogeneity (level 2) corresponds to the unnacounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unnacounted variation between studies (level 3).
+  <b>Supplementary Figure 5 -</b> Visual representation of how variance was distributed over the multilevel structure of the intercept-only model. Within study heterogeneity (level 2) corresponds to the unaccounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unaccounted variation between studies (level 3).
 </div>
 
 <br>
 
-The value of I^2^ = 85% corresponding to the amount of heterogeneity that remains uncounted for in the intercept-only model, gives a green signal to proceed with the use of moderators that can potentially explain some of this variation. 
+The value of I^2^ = 85% corresponding to the amount of heterogeneity that remains unaccounted for in the intercept-only model, gives a green signal to proceed with the use of moderators that can potentially explain some of this variation. 
 
 ## Analysis of moderators
 We extended the previous intercept-only model with the inclusion of moderators as fixed factors. For these analyses, all moderator levels with less than 5 studies were excluded as low study sizes are more liable to produce biased estimates. This led to the removal of the acoustic indices ‘Hf’, ‘Ht’, ‘M’ and ‘NP’, and the biodiversity parameter ‘sound richness’ from model fitting procedures. 
@@ -492,7 +492,7 @@ cat("Heterogenity after fitting the full model\n\t", sum_I_full, "\n\n",
 #### **Full model results**
 
 <div id="fig-caption">
-  <b>Supplementary Table 9 -</b> Meta-regression results. The column "Coefficients" lists the model intercept and the levels of each moderator. The column "Estimate" is the estimated Pearson (r) correlation. "SE" is the standard error of the estimate. "CI" are the [lower] [upper] bounds of the confidence intervals.
+  <b>Supplementary Table 9 -</b> Table used to plot Supplementary Figure 6. Each estimate corresponds to the additive effect when a moderator level is replaced in the intercept (e.g. ADI is the additive effect of ADI when ADI is put as intercept instead of ACI). The column "Coefficients" lists the model intercept and the levels of each moderator. The column "Estimate" is the estimated Pearson (r) correlation. "SE" is the standard error of the estimate. "CI" are the [lower] [upper] bounds of the confidence intervals.
 </div>
 ```{r mod_level_estimates}
 df_pred_tbl <- get_predictions(res_full, format_table = TRUE, clean_labels = TRUE)
@@ -529,7 +529,7 @@ ggplot(data = df_pred, aes(x = z2r(estimate), y = coef, color = moderators)) +
 
 ```
 <div id="fig-caption">
-  <b>Supplementary Figure 6 -</b> Effect size mean estimates (circles) and corresponding 95% confidence intervals (horizontal lines) obtained from meta-regression analysis with moderators: acoustic indices (Index), biodiversity metrics (Bio), environment (Environment) and acoustic source (Source). Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero.
+  <b>Supplementary Figure 6 -</b> Mean estimates (circles) and corresponding 95% confidence intervals (horizontal lines). Moderators are acoustic indices (Index), biodiversity metrics (Bio), environment (Environment) and acoustic source (Source). Each estimate corresponds to the additive effect when a moderator level is replaced in the intercept (e.g. ADI is the additive effect of ADI when ADI is put as intercept instead of ACI). Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero.
 </div>
 
 <br>
@@ -857,7 +857,7 @@ ggplot(data = df_examine_outliers, aes(x = estimate, y = coef, color = df, posit
     )
 ```
 <div id="fig-caption">
-<b>Figure 5c -</b> Contrast of model estimates obtained with meta-regression analysis over the full dataset (yellow) and over the dataset with outliers removed (blue). Mean estimates are represented with circles and corresponding 95% confidence intervals with horizontal lines. We considered outliers every study that had a Cook's distance value higher than the mean of all Cook distances. Model moderators were acoustic indices (ADI, AEI, AR, BIO, H, NDSI, with ACI as intercept), diversity metric (Abundance, Diversity, Sound abundance, with Richness as intercept), environment (Aquatic, with Terrestrial as intercept), diversity source (Acoustic, with Non-Acoustic as intercept). The solid vertical black line represents a null effect size.
+<b>Figure 5c -</b> Contrast of model estimates obtained with meta-regression analysis over the full dataset (yellow) and over the dataset with outliers removed (blue). Estimates are represented with circles and corresponding 95% confidence intervals with horizontal lines. Each estimate corresponds to the additive effect when a moderator level is replaced in the intercept (e.g. ADI is the additive effect of ADI when ADI is put as intercept instead of ACI). Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero. We considered outliers every study that had a Cook's distance value higher than the mean of all Cook distances. Model moderators were acoustic indices (ADI, AEI, AR, BIO, H, NDSI, with ACI as intercept), diversity metric (Abundance, Diversity, Sound abundance, with Richness as intercept), environment (Aquatic, with Terrestrial as intercept), diversity source (Acoustic, with Non-Acoustic as intercept). The solid vertical black line represents a null effect size.
 </div>
 
 <br>
