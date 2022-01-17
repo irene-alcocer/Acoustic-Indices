@@ -86,7 +86,7 @@ clear_moderators <- function(df,
         if(!is.factor(df[[mod]])){
           df[[mod]] <- as.factor(df[[mod]])
         }
-        cat(sprintf("\n\tModerator %s", mod, "/n/t"))
+        cat(sprintf("\n\tModerator %s", mod, "\n\t"))
         nr_entries <- apply(table(df[[mod]], df$id), 1, 
                             function(x) length(which(x > 0)))
         less_5 <- names(which(nr_entries < lower_nr))
@@ -94,7 +94,7 @@ clear_moderators <- function(df,
         df[[mod]] <- droplevels(df[[mod]])
         cat("\n\t\t", less_5)
         
-        # Relevel some factos
+        # Relevel some factors
         if(mod == "diversity_source"){
             df[[mod]] <- relevel(df[[mod]], ref = "no_acoustic")
         }
@@ -159,38 +159,6 @@ z2r <- function(z){
     
     return(num/denom)
     
-}
-
-# Function to conduct meta-analysis on acoustic indice data
-acoustic_meta <- function(df, n_used = "n_adjusted", mods = NULL, rm_rows = c(54),
-                          no_intercept = FALSE, not_tidy = TRUE, method = "REML"){
-    # Clean database
-    if(not_tidy){
-        df <- tidy_data(df, n_used, rm_rows)
-    }
-
-    # Create formula and remove levels of moderators
-    if(!is.null(mods)){
-        df <- clear_moderators(df, mods)
-        if(length(mods) == 1 & no_intercept){
-            mods_formula = as.formula(paste("~", paste(mods, 
-						       collapse = " + "), "- 1"))
-        }else{
-            if(length(mods) > 1 & no_intercept){
-                warning("Number of moderators bigger than one. No intercept removed")
-            }
-            mods_formula = as.formula(paste("~", paste(mods, collapse = " + ")))
-            print(mods_formula)
-            mods_levels <- lapply(mods, function(x) levels(df[[x]]))   
-            intercept <- lapply(mods_levels, function(x) x[1])
-            cat("Intercept is ", paste(intercept, collapse = " + "), "\n")
-        }
-    }else{ mods_formula <- NULL}
-    
-    res <- rma.mv(z, var, random = ~1 | id/entry, mods = mods_formula, data = df, 
-                  method = method)
-    
-    return(list(res = res, df = df))
 }
 
 multilevel_I <- function(rma_mv_res){
@@ -276,11 +244,11 @@ compare_moderators <- function(df, res, moderator, ref_level){
         test_levs[grep(levs[i], rownames(res$b))] <- -1
         test_levs[grep(lev2, rownames(res$b))] <- 1
         comp <- anova(res, L = test_levs)
-        CI.lb <- comp$Lb[,1] - 1.96 * comp$se
-        CI.ub <- comp$Lb[,1] + 1.96 * comp$se
+        CI.lb <- comp$Xb[,1] - 1.96 * comp$se
+        CI.ub <- comp$Xb[,1] + 1.96 * comp$se
         lev1 <- ifelse(levs[i] == lev2, levels(df[[moderator]])[1], levs[i])
         comparison <- str_remove_all(paste0(lev2, " - ", lev1), moderator)
-        values <- c(comparison, comp$Lb[,1], comp$se, 
+        values <- c(comparison, comp$Xb[,1], comp$se, 
                     CI.lb, CI.ub, comp$QM, comp$QMp)
         df_comparisons[i, ] <- values
         
@@ -405,4 +373,26 @@ mlm.variance.distribution <- function(x){
 
     suppressWarnings(print(g))
     invisible(df.res)
+}
+
+final_mod_names <- function(names_vec, shorter = FALSE){
+    if(shorter){
+        sp <- "Sp."
+        abund <- "Abund."
+        diver <- "Div."
+    }else{
+        sp <- "Species"
+        abund <- "Abundance of"
+        diver <- "Diversity of"
+    }
+    names_vec <- names_vec %>% 
+        str_replace("^(a|A)bundance", paste(sp, "abundance")) %>%
+        str_replace("^(d|D)iversity", paste(sp, "diversity")) %>%
+        str_replace("^(s|S)ound(_| )abundance", paste(abund, "sounds")) %>%
+        str_replace("^(s|S)ound(_| )richness", paste(diver, "sounds")) %>%
+        str_replace("A$", "Aquatic") %>%
+        str_replace("^acoustic", "Acoustic") %>%
+        str_replace("no_acoustic", "Non acoustic") %>%
+
+    return(names_vec)
 }
