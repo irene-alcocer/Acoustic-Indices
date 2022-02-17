@@ -59,7 +59,7 @@ A neat presentation of the supplementary material can be found in \url{https://i
 \end{table}
 
 \begin{table}[!ht]
-    \caption{Variable descriptions for Supplementary Table 2. Available at https://irene-alcocer.github.io/Acoustic-Indices/}
+    \caption{Variable descriptions for Supplementary Table 1. Available at https://irene-alcocer.github.io/Acoustic-Indices/}
 \end{table}
 
 ```{r data_features_table}
@@ -166,7 +166,7 @@ kbl(sample_sizes, booktabs = TRUE, row.names = FALSE,
 \begin{figure}[H]
     \includegraphics{"rmd/ps.index.png"}
     \caption{
-        Pseudoreplication summary. The data is representing the total number of articles for each index. Color orange represents number of pseudo-replicated studies and green non pseudo-replicated studies. The article (Papin et al., 2019b) was withdrawal from the pseudoreplication analysis due to impossibility of obtaining the pseudoreplication data causing some variation on the total number of each acoustic index.
+        Pseudoreplication summary. The data is representing the total number of articles for each index. Color orange represents number of pseudo-replicated studies and green non pseudo-replicated studies. The article (Papin et al., 2019b) was withdrawn from the pseudoreplication analysis due to impossibility of obtaining the pseudoreplication data causing some variation on the total number of each acoustic index.
     }
 \end{figure}
 
