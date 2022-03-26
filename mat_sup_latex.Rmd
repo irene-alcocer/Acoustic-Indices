@@ -206,12 +206,12 @@ header <- c(3)
 names(header) <- c(total_I)
 kbl(Is_df, booktabs = TRUE, digits = 2, 
     caption = "
-        Uncounted heterogeneity of the intercept-only model as measured by $I^2$ statistic. Within study heterogeneity (level 2) corresponds to the uncounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the uncounted variation between studies (level 3).
+        Unaccounted heterogeneity of the intercept-only model as measured by $I^2$ statistic. Within study heterogeneity (level 2) corresponds to the unaccounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unaccounted variation between studies (level 3).
     ") %>%
   kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) 
 ```
 
-```{r dmetar_I, fig.align = "center", fig.pos = "H", fig.cap = "Visual representation of how variance was distributed over the multilevel structure of the intercept-only model. Within study heterogeneity (level 2) corresponds to the unnacounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unnacounted variation between studies (level 3)."}
+```{r dmetar_I, fig.align = "center", fig.pos = "H", fig.cap = "Visual representation of how variance was distributed over the multilevel structure of the intercept-only model. Within study heterogeneity (level 2) corresponds to the unaccounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unaccounted variation between studies (level 3)."}
 mlm.variance.distribution(res_main)
 ```
 
