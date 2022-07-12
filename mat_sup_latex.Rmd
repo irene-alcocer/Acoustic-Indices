@@ -1,12 +1,15 @@
 ---
 title: "Acoustic indices as proxies for biodiversity: a meta-analysis"
-subtitle: "Supplementary material"
+subtitle: "Supporting information"
 header-includes:
    - \usepackage{booktabs}
    - \usepackage{colortbl}
    - \usepackage{float}
-   - \usepackage[labelfont=bf]{caption}
+   - \usepackage{caption}
+   - \DeclareCaptionLabelFormat{Sfignum}{#1~S#2} 
+   - \captionsetup{labelfont=bf, labelformat=Sfignum, labelsep=period, singlelinecheck=false}
 geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+author: "Irene Alcocer, Herlander Lima, Larissa S. M. Sugai, Diego Llusia"
 output:
         pdf_document:
             number_sections: false
@@ -14,10 +17,10 @@ output:
             keep_tex: true
 ---
  
-\renewcommand{\figurename}{Fig. S.}
-\renewcommand{\tablename}{Table S}
+\renewcommand{\figurename}{Fig.}
+\renewcommand{\tablename}{Table}
 
-A neat presentation of the supplementary material can be found in \url{https://irene-alcocer.github.io/Acoustic-Indices/}
+A neat presentation of the supplementary material can be found in the online supplementary material at \url{https://irene-alcocer.github.io/Acoustic-Indices/}
 
 ```{r, include = FALSE}
     knitr::opts_chunk$set(cache = FALSE, warning = FALSE, message = FALSE, echo = FALSE)
@@ -26,6 +29,7 @@ A neat presentation of the supplementary material can be found in \url{https://i
 ```{r, warning = FALSE, message = FALSE, results = "hide", cache = FALSE}
     require(knitr)
     require(png)
+    require(tidyverse)
     require(dplyr)
     require(stringr)
     require(metafor)
@@ -33,12 +37,11 @@ A neat presentation of the supplementary material can be found in \url{https://i
     require(kableExtra)
     require(pander)
     require(ggplot2)
+    require(ggtext)
     require(RColorBrewer)
   
     source("src/acoustic_indices_functions.R")
 ```
-
-\section{Data descriptions}
 
 ```{r tidydata, include = FALSE}
     df_raw <- read.csv("data/Table.S1.csv")
@@ -55,11 +58,13 @@ A neat presentation of the supplementary material can be found in \url{https://i
 ```
 
 \begin{table}[!ht]
-    \caption{Dataset used in the study. Due to the size of this table it is only available at https://irene-alcocer.github.io/Acoustic-Indices/}
+    \caption{Data set used in the study. Due to the size of this table it is only available at \url{https://irene-alcocer.github.io/Acoustic-Indices/index.html\#Dataset} }
+    \label{table:dataset}
 \end{table}
 
-\begin{table}[!ht]
-    \caption{Variable descriptions for Table S1. Available at https://irene-alcocer.github.io/Acoustic-Indices/}
+\begin{table}[h]
+    \caption{Variable descriptions for Table S\ref{table:dataset}. Available at
+     \url{https://irene-alcocer.github.io/Acoustic-Indices/index.html\#Dataset} }
 \end{table}
 
 ```{r data_features_table}
@@ -80,7 +85,7 @@ descript_bio_data <- c("Ecosystem type where recordings were collected (aquatic 
                        "Primary studied group (invertebrates, fish, anurans, mammals, birds, or several)",
                        "Species abundance, species richness, species diversity, abundance of sounds, or diversity of sounds",
                        "Method applied to obtain the diversity metric (acoustic or non-acoustic)")
-descript_acous_data <- c("ACI, AEI, ADI, AR, BIO, H, H\\textsubscript{t}, H\\textsubscript{f}, M, NP, or NDSI",
+descript_acous_data <- c("ACI, AEI, ADI, AR, BIO, H, H\\textsubscript{t}, H\\textsubscript{f}, M, NP, or NDSI. See Table 2 for definitions of acoustic indices",
                          "Range (in Hz) used for index calculation",
                          "Window size of the Fast Fourier Transformation (FFT)",
                          "Audio pre-processing related to noise (noise filtering, noise addition, or exclusion of noisy recordings)")
@@ -111,7 +116,7 @@ features_tbl <- data.frame(Category = rep(categories, feature_rows),
                            Features = features,
                            Description = descriptions)
 kbl(features_tbl, booktabs = TRUE, escape = FALSE,
-    caption = "List of the 34 features used to characterize studies that tested the relationship between acoustic indices and diversity metrics.") %>%
+    caption = "List of the 34 features used to characterise studies that tested the relationship between acoustic indices and diversity metrics.") %>%
    kable_styling(latex_options = c("scale_down", "HOLD_position")) %>%
    row_spec(0, font_size = 12, bold = TRUE) %>%
    column_spec(1, bold = TRUE) %>%
@@ -128,9 +133,11 @@ colnames(studies_n) <- c("Study", "ID", "Effect_sizes")
 studies_n <- studies_n %>%
               select(ID, Study, Effect_sizes) %>%
               arrange(-Effect_sizes)
+colnames(studies_n) <- c("ID", "Study", "Number of effect sizes")
+studies_n$Study <- author_format(studies_n$Study, markup = "latex")
 
-kbl(studies_n, booktabs = TRUE, 
-    caption = "Number of effect sizes collected from each of the 34 studies included in the meta-analysis. ID corresponds to the study identification number in our data set.") %>%
+kbl(studies_n, booktabs = TRUE, escape = FALSE,
+    caption = "Number of effect sizes collected from each of the 34 studies included in the meta-analysis. ID corresponds to the study identification number in our data set.")  %>%
     kable_styling(latex_options = c("striped", "HOLD_position"), 
                                     full_width = FALSE) 
 ```
@@ -143,16 +150,21 @@ sample_sizes <- do.call(rbind, lapply(mods, function(x) n_studies_entries(df_tid
 sample_sizes <- cbind(row.names(sample_sizes), sample_sizes)
 sample_sizes <- as.data.frame(sample_sizes)
 names(sample_sizes) <- c("Moderator_levels", "Effect_sizes", "Studies")
-sample_sizes$Moderator_levels <- str_replace(sample_sizes$Moderator_levels, "^([a-z])", toupper)
+sample_sizes$Moderator_levels <- str_replace(sample_sizes$Moderator_levels,
+                                             "^([a-z])", toupper)
 sample_sizes$Moderator_levels[12:16] <- c("Species abundance", "Species diversity",
                                           "Species richness", "Abundance of sounds",
                                           "Diversity of sounds")
 sample_sizes$Moderator_levels[18] <- "Non-acoustic"
 n_row <- nrow(sample_sizes)
 sample_sizes$Moderator_levels[(n_row - 1):n_row] <- c("Aquatic", "Terrestrial")
+sample_sizes$Moderator_levels <- str_replace(sample_sizes$Moderator_levels,
+                                             "Hf", "H\\\\textsubscript{f}")
+sample_sizes$Moderator_levels <- str_replace(sample_sizes$Moderator_levels,
+                                             "Ht", "H\\\\textsubscript{t}")
 names(sample_sizes) <- c("Moderator levels", "Effect sizes", "Studies")
 
-kbl(sample_sizes, booktabs = TRUE, row.names = FALSE, 
+kbl(sample_sizes, booktabs = TRUE, row.names = FALSE, escape = FALSE,
     caption = "Number of effect sizes and studies per moderator levels. See Table 2 for definitions of acoustic indices.") %>%
     kable_styling(latex_options = c("striped", "HOLD_position"), 
                                     full_width = FALSE) %>%
@@ -166,80 +178,90 @@ kbl(sample_sizes, booktabs = TRUE, row.names = FALSE,
 \begin{figure}[H]
     \includegraphics{"rmd/ps.index.png"}
     \caption{
-        Pseudoreplication summary. The data represent the total number of articles for each index. Orange dots represent the number of  studies with pseudoreplicates studies and green are without pseudoreplication studies. One article (Papin et al., 2019) was withdrawn from the pseudoreplication analysis as it was impossible to obtain data on pseudoreplication, thus leading to some variation in the total for each acoustic index. See Table 2 for definitions of acoustic indices.
-    }
+        Pseudoreplication summary. The data represent the total number of articles for each index. Orange dots represent the number of  studies with pseudoreplication and green are without pseudoreplication. One article (Papin et al., 2019) was withdrawn from the pseudoreplication analysis as it was impossible to obtain data on pseudoreplication, thus leading to some variation in the total for each acoustic index. See Table 2 for definitions of acoustic indices.}
 \end{figure}
+
+```{r df_meta_regression, include = FALSE, results = "hide"}
+mods <- c("index", "bio", "environ", "diversity_source")
+df_full <- clear_moderators(df_tidy, mods)
+```
+
+```{r meta_regression, echo = FALSE}
+res_full <- rma.mv(z, var, random = ~1 | id/entry, 
+                   mods = ~ index + bio + environ + diversity_source, 
+                   data = df_full)
+#res_full
+#
+# Table is Table 4
+#res_full_tbl <- model_res_table(res_full)
+#kable(res_full_tbl, digits = 3, align = "lrrc", booktabs = TRUE,
+#      caption = "Model estimates for the meta-regression over the data set without outliers. All values are Pearson correlation \\textit{r}. Full model output can be found in the online supplementary material.") %>%
+#  kable_styling(latex_options = c("striped", "HOLD_position"),
+#                full_width = FALSE) %>%
+#   row_spec(0, bold = TRUE) 
+```
+
+```{r collinearity}
+vif_meta <- vif.rma(res_full, table = TRUE)$vif["vif"][-1, , drop = FALSE]
+vif_meta <- tibble::rownames_to_column(vif_meta, "Moderators")
+colnames(vif_meta)[2] <- "VIF" 
+vif_meta$VIF <- round(vif_meta$VIF, 3)
+vif_meta$Moderators <- str_remove(vif_meta$Moderators, "index|bio|environ|diversity_source")
+vif_meta$Moderators <- final_mod_names(vif_meta$Moderators)
+kbl(vif_meta, booktabs = TRUE, 
+    caption = "
+        VIF (Variance Inflation Factor) values obtained for each moderator level. See Table 2 for definitions of acoustic indices.
+    ") %>%
+  kable_styling(latex_options = c("striped", "HOLD_position"),
+                full_width = FALSE) %>%
+   row_spec(0, bold = TRUE) 
+```
 
 \clearpage
 
-\section{Model output}
-```{r meta_overall, echo = TRUE}
+```{r meta_overall, echo = FALSE}
 res_main <- rma.mv(z, var, random = ~1 | id/entry, data = df_tidy)
-res_main
-```
+#res_main
 
-```{r meta_overall_r}
-r_main <- sapply(c(r = res_main$b, CI.lb = res_main$ci.lb, CI.ub = res_main$ci.ub), z2r)
-r_main_pander <- r_main
-names(r_main_pander) <- c("Estimate", names(r_main)[2:3])
-r_main_pander <- as.data.frame(cbind(names(r_main_pander), round(r_main_pander, 2)))
-colnames(r_main_pander) <- c("Parameter", "Value")
-kbl(r_main_pander, booktabs = TRUE, row.names = FALSE,
-    caption = "
-        Estimates from intercept-only model converted to Pearson's correlation coefficient \\textit{r}. \"Estimate\" is the Pearson's \\textit{r} summary effect size. CI.lb and CI.ub are the confidence interval lower and upper bounds, respectively.
-    ") %>%
-    kable_styling(latex_options = c("striped", "HOLD_position"),
-                                    full_width = FALSE) 
-```
+res_main_tbl <- model_res_table(res_main, y_labels = "Overall effect")
+colnames(res_main_tbl)[1] <- ""
+kable(res_main_tbl, digits = 3, align = "lrrc", booktabs = TRUE,
+      caption = "Model estimates for the intercept-only model. All values are Pearson correlation \\textit{r}. SE is the standard error and CI the confidence interval. Full model output can be found in the online supplementary material.") %>%
+  kable_styling(latex_options = c("striped", "HOLD_position"),
+                full_width = FALSE) %>%
+   row_spec(0, bold = TRUE) 
 
-
-
-```{r meta_hetero}
-Is <- multilevel_I(res_main) * 100
-Is_df <- data.frame(Is[1], Is[2])
-names(Is_df) <- c("Within study", "Between study")
-rownames(Is_df) <- c("% Unexplained variation")
-total_I <- paste("Total heterogeneity: ", round(Is[1] + Is[2], 2), "%")
-header <- c(3)
-names(header) <- c(total_I)
-kbl(Is_df, booktabs = TRUE, digits = 2, 
-    caption = "
-        Unaccounted for heterogeneity of the intercept-only model as measured by the $I^2$ statistic. Within-study heterogeneity (level 2) corresponds to the unaccounted for variation that is found on effect sizes within studies, and between-study heterogeneity corresponds to the unaccounted for variation between studies (level 3).
-    ") %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) 
 ```
 
 ```{r dmetar_I, fig.align = "center", fig.pos = "H", fig.cap = "Visual representation of the distribution of variance over the multilevel structure of the intercept-only model. Within-study heterogeneity (level 2) corresponds to the unaccounted for variation that is found on effect sizes within studies, and between-study heterogeneity corresponds to the unaccounted for variation between studies (level 3)."}
 mlm.variance.distribution(res_main)
 ```
 
-\clearpage
-
-\section{Model output}
-
 ```{r df_meta_indices, include = FALSE, results = "hide"}
 df_indices <-  clear_moderators(df_tidy, "index")
 ```
 
-```{r meta_indices, echo = TRUE}
+```{r meta_indices, echo = FALSE}
 res_indices <- rma.mv(z, var, random = ~ 1 | id/entry, mods = ~ index - 1, data = df_indices)
-res_indices
-```
+#res_indices
 
-```{r meta_indices_tbl}
-df_pred_indices <- get_predictions(res_indices, intercept = FALSE)
-df_pred_indices$coef <- str_remove(df_pred_indices$coef, "index")
-names(df_pred_indices) <- c("Index", "Estimate", "SE", "CI.lb", "CI.ub")
-kbl(df_pred_indices, booktabs = TRUE, 
-    caption = "
-        Estimates from the sub-group analysis. The \"Estimate\" column is the Pearson correlation effect size \\textit{r}; SE is the standard error and CI.lb and CI.ub; the lower and upper bounds of the confidence intervals, respectively. See Table 2 for definitions of acoustic indices.
-    ") %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) 
+res_indices_tbl <- model_res_table(res_indices,
+                                   y_labels = c(
+                                     "ACI", "Index ADI", "Index AEI",
+                                     "Index AR", "Index BIO", "Index H",
+                                     "Index NDSI")
+                                   )
+colnames(res_indices_tbl)[1] <- "Index"
+kable(res_indices_tbl, digits = 3, align = "lrrc", booktabs = TRUE,
+      caption = "Model estimates for the sub-group analysis. All values are Pearson correlation \\textit{r}. SE is the standard error and CI the confidence interval. See Table 2 for definitions of acoustic indices. Full model output can be found in the online supplementary material.") %>%
+  kable_styling(latex_options = c("striped", "HOLD_position"),
+                full_width = FALSE) %>%
+   row_spec(0, bold = TRUE) 
 ```
 
 \clearpage
 
-```{r subgroup_plt, fig.pos = "H", fig.cap = "Effect size mean estimates (circles) and corresponding 95% confidence intervals (horizontal lines) obtained from sub-group meta-analysis with acoustic indices as the moderating factor. Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero. The dashed green vertical line represents the summary effect size obtained from the intercept only meta-analysis."}
+```{r subgroup_plt, fig.pos = "H", fig.cap = "Effect size mean estimates (circles) and corresponding 95% confidence intervals (horizontal lines) obtained from the sub-group meta-analysis with acoustic indices as the moderating factor. Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero. The dashed green vertical line represents the summary effect size obtained from the intercept only meta-analysis."}
 nentries_index <- rowSums(table(df_indices$index, df_indices$id))
 nstudies_index <- rowSums(ifelse(table(df_indices$index, df_indices$id) > 0, 1, 0))
 n_index <- paste0(nentries_index, " (", nstudies_index, ")")
@@ -260,8 +282,8 @@ ggplot(data = df_indices_plt, aes(x = es, y = index)) +
                linetype = 2) + 
     scale_y_discrete(limits = rev(df_indices_plt$index)) +
     scale_color_brewer(palette="Dark2") +
+    xlab(expression(paste("Effect size (", italic("r"), ")"))) +
     theme_minimal() + 
-    xlab("Effect size (r)") +
     theme(axis.text.x = element_text(size = 12, color = "black"),
           axis.text.y = element_text(size = 13, color = "black"),
           axis.line.x = element_line(color = "black"),
@@ -272,44 +294,11 @@ ggplot(data = df_indices_plt, aes(x = es, y = index)) +
     )
 ```
 
-\section{Meta-regression}
-
-\subsection{Model output}
-
-```{r df_meta_regression, include = FALSE, results = "hide"}
-mods <- c("index", "bio", "environ", "diversity_source")
-df_full <- clear_moderators(df_tidy, mods)
-```
-
-```{r meta_regression, echo = TRUE}
-res_full <- rma.mv(z, var, random = ~1 | id/entry, 
-                   mods = ~ index + bio + environ + diversity_source, 
-                   data = df_full)
- 
-res_full
-```
-
-
-
-```{r collinearity}
-vif_meta <- vif.rma(res_full, table = TRUE)$vif["vif"][-1, , drop = FALSE]
-vif_meta <- tibble::rownames_to_column(vif_meta, "Moderators")
-colnames(vif_meta)[2] <- "VIF" 
-vif_meta$VIF <- round(vif_meta$VIF, 3)
-vif_meta$Moderators <- str_remove(vif_meta$Moderators, "index|bio|environ|diversity_source")
-vif_meta$Moderators <- final_mod_names(vif_meta$Moderators)
-kbl(vif_meta, booktabs = TRUE, 
-    caption = "
-        VIF values obtained for each moderator level.See Table 2 for definitions of acoustic indices.
-    ") %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) 
-```
-
-
 
 ```{r test_moderators}
 imp_mods <- matrix(nrow = length(mods) + 1, ncol = 4, 
-                   dimnames = list(NULL, c("Moderator", "Q", "df", "p")))
+                   dimnames = list(NULL, c("Moderator", "\\textit{Q}",
+                                           "df", "\\textit{p}")))
 imp_mods <- as.data.frame(imp_mods)
 # Add importance of all moderators
 imp_mods[1, 2:ncol(imp_mods)] <- res_full[c("QM", "m", "QMp")]
@@ -323,33 +312,41 @@ for(i in 2:nrow(imp_mods)){
 imp_mods$Moderator[2:nrow(imp_mods)] <- c("Acoustic indices", 
                                           "Diversity metrics", 
                                           "Environment", "Diversity source")
-imp_mods <- mutate_if(imp_mods, is.numeric, round, 3)
-
-kbl(imp_mods, booktabs = TRUE, 
+kbl(imp_mods, digits = 3, booktabs = TRUE, escape = FALSE,
     caption = "
-       Results of Wald-type tests for all moderators (first row), and for each moderator separately (remaining rows). \"Q\" is the Wald statistic; \"df\" are the degrees of freedom; and \"p\" is the probability that moderator estimates came from a chi-square distribution, where all estimates are equal to zero. Thus p < 0.05 provides support against the null hypothesis that moderator levels estimates are equal to zero (i.e. they do not explain variation in effect sizes).
+       Results of Wald-type tests for all moderators (first row), and for each moderator separately (remaining rows). ``Q\" is the Wald statistic; ``df\" are the degrees of freedom; and ``p\" is the probability that moderator estimates came from a chi-square distribution, where all estimates are equal to zero. Thus p < 0.05 provides support against the null hypothesis that moderator levels estimates are equal to zero (i.e. they do not explain variation in effect sizes).
     ") %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) 
+  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) %>%
+   row_spec(0, bold = TRUE) 
 ```
 
 
 ```{r compare_indices_H}
 # Test differences between H and other indices
 H_comp <- compare_moderators(df_full, res_full, "index", "H")
-kbl(H_comp, digits = 3, booktabs = TRUE,
+kbl_align <- ifelse(unlist(lapply(H_comp, is.numeric)), "r", "l")
+H_comp <- mutate_if(H_comp, is.numeric, place_minus)
+
+kbl(H_comp, digits = 3, booktabs = TRUE, escape = FALSE,
+    align = kbl_align,
     caption = "
-        Results of Wald-type tests for the contrasts between acoustic index H and all other acoustic indices. The column \"Compared\" expresses the comparison, in this cases it is the difference between the estimate H and the estimate of each of the other acoustic indices. The column \"Estimate\" is the estimate obtained from the difference shown in the previous column. \"SE\" is the standard error of the difference, and CI.lb, CI.ub the confidence interval lower and upper bound, respectively. \"Q\\textsubscript{m}\" is the Wald statistic; \"p\" is the probability that the difference between estimates is equal to zero. Thus, p < 0.05 gives support against the null hypothesis of no difference between the estimate of the H index and the estimate of the other index.
+        Results of Wald-type tests for the contrasts between acoustic index H and all other acoustic indices. The column ``Compared\" expresses the difference between the estimate for H and the estimate of each of the other acoustic indices. The column ``Estimate\" is the estimate obtained from the difference shown in the previous column. ``SE\" is the standard error of the difference, and CI.lb, CI.ub the confidence interval lower and upper bound, respectively. ``Q\\textsubscript{m}\" is the Wald statistic; ``p\" is the probability that the difference between estimates is equal to zero. Thus, p < 0.05 gives support against the null hypothesis of no difference between the estimate of the H index and the estimate of the other index.
     ") %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) 
+  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) %>%
+   row_spec(0, bold = TRUE) 
 ```
 
 ```{r compare_indices_NDSI}
 NDSI_comp <- compare_moderators(df_full, res_full, "index", "NDSI")
-kbl(NDSI_comp, digits = 3, booktabs = TRUE,
+kbl_align <- ifelse(unlist(lapply(NDSI_comp, is.numeric)), "r", "l")
+NDSI_comp <- mutate_if(NDSI_comp, is.numeric, place_minus)
+kbl(NDSI_comp, digits = 3, booktabs = TRUE, escape = FALSE,
+    align = kbl_align,
     caption = "
-         Results of Wald-type tests for the contrasts between acoustic index NDSI and all other acoustic indices. The column \"Compared\" shown the difference between the estimate NDSI and the estimate of each of the other acoustic indices. The column \"Estimate\" is the estimate obtained from the difference expressed in the previous column; \"SE\" is the standard error of the difference, and CI.lb, CI.ub the confidence interval lower and upper bound, respectively; \"Q\\textsubscript{m}\" is the Wald statistic; \"p\" is the probability that the difference between estimates is equal to zero. Thus, a p < 0.05 gives support against the null hypothesis of no difference between the estimate of the NDSI index and the estimate of the other index.
+         Results of Wald-type tests for the contrasts between acoustic index NDSI and all other acoustic indices. The column ``Compared\" expresses the difference between the estimate NDSI and the estimate of each of the other acoustic indices. The column ``Estimate\" is the estimate obtained from the difference expressed in the previous column; ``SE\" is the standard error of the difference, and CI.lb, CI.ub the confidence interval lower and upper bound, respectively; ``Q\\textsubscript{m}\" is the Wald statistic; ``p\" is the probability that the difference between estimates is equal to zero. Thus, a p < 0.05 gives support against the null hypothesis of no difference between the estimate of the NDSI index and the estimate of the other index.
     ") %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) 
+  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) %>%
+   row_spec(0, bold = TRUE) 
 ```
 
 ```{r compare_bio}
@@ -357,17 +354,71 @@ sound_abund_comp <- compare_moderators(df_full, res_full, "bio", "sound_abundanc
 sound_abund_comp$Compared <- c("Abundance of sounds - Species abundance",
                                "Abundance of sounds - Species diversity",
                                "Abundance of sounds - Species richness")
-kbl(sound_abund_comp, digits = 3, booktabs = TRUE,
+kbl_align <- ifelse(unlist(lapply(sound_abund_comp, is.numeric)), "r", "l")
+sound_abund_comp <- mutate_if(sound_abund_comp, is.numeric, place_minus)
+kbl(sound_abund_comp, digits = 3, booktabs = TRUE, escape = FALSE,
+    align = kbl_align,
     caption = "
-         Results of Wald-type tests for the contrasts between the diversity metric \"abundance of sounds\" and all other diversity metrics. The column \"Compared\" expresses the difference between the estimate \"abundance of sounds\" and the estimate of each of the other diversity metrics. The column \"Estimate\" is the estimate obtained from the difference shown in the previous column; \"SE\" is the standard error of the difference, and CI.lb, CI.ub the confidence interval lower and upper bound, respectively; \"Q\\textsubscript{m}\" is the Wald statistic; \"p\" is the probability that the difference between estimates is equal to zero. Thus, a p < 0.05 gives support against the null hypothesis of no difference between the estimate of the sound abundance metric and the estimate of the other metric.
+         Results of Wald-type tests for the contrasts between the diversity metric ``abundance of sounds\" and all other diversity metrics. The column ``Compared\" expresses the difference between the estimate ``abundance of sounds\" and the estimate of each of the other diversity metrics. The column ``Estimate\" is the estimate obtained from the difference shown in the previous column; ``SE\" is the standard error of the difference, and CI.lb, CI.ub the confidence interval lower and upper bound, respectively; ``Q\\textsubscript{m}\" is the Wald statistic; ``p\" is the probability that the difference between estimates is equal to zero. Thus, a p < 0.05 gives support against the null hypothesis of no difference between the estimate of the abundance of sounds metric and the estimate of the other metric.
     ") %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) 
+  kable_styling(latex_options = c("striped", "HOLD_position"), full_width = FALSE) %>%
+   row_spec(0, bold = TRUE) 
+  
 ```
 
 \clearpage
 
+```{r pseudoreplication_moderator, echo = FALSE}
+df_pseudorep <-  clear_moderators(df_tidy, "pseudoreplication", verbose = FALSE)  
+  
+res_pseudorep <- rma.mv(z, var, random = ~1 | id/entry, mods = ~ pseudoreplication, 
+                        data = df_pseudorep)
+#res_pseudorep
+res_pseudorep_tbl <- model_res_table(res_pseudorep,
+                                     y_labels = c("Intercept",
+                                                  "Mod Pseudoreplicated"))
+kable(res_pseudorep_tbl, digits = 3, align = "lrrc", booktabs = TRUE,
+      caption = "Model estimates for the meta-analysis inspecting differences between pseudoreplicated and non-pseudoreplicated studies. The intercept correspond to the non-pseudoreplicated effect sizes. All values are Pearson correlation \\textit{r}. SE is the standard error, CI the confidence interval. Full model output can be found in the online supplementary material") %>%
+  kable_styling(latex_options = c("striped", "HOLD_position"),
+                full_width = FALSE) %>%
+   row_spec(0, bold = TRUE) 
+```
 
-```{r cooks_dist_study, fig.height = 6, fig.pos = "h", fig.cap = "Cook's distance values for each study (blue dots) and average Cook's distance over all studies (dashed vertical red line). The Cook's distance for a given study can be interpreted as the distance between the entire set of predicted values with this study included and when this study is excluded from the model fitting procedure."}
+```{r effect_size_impact_factor, fig.pos = "H", fig.cap = "Relationship between reported mean effect sizes and journal impact factor. Circle size indicates the relative sample size for each effect size. The fitted line is a meta-regression over the journal impact factor with the corresponding 95% confidence interval region shaded grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the impact factor axis with minor random noise to reduce overlapping. Model statistics in Pearson correlation \\textit{r} estimate [CI], intercept 0.40 [0.10, 0.63], slope --0.01 [--0.10, 0.08]. Full model output can be found in the online supplementary material"}
+df_tidy_if <- filter(df_tidy, !is.na(impact_factor))
+lin <- rma.mv(z, var, random = ~ 1 | id/entry, mods = ~ impact_factor, data = df_tidy_if)
+preds <- predict(lin, interval = "confidence")
+df_tidy_if$y <- z2r(preds$pred)
+df_tidy_if$ymin <- z2r(preds$ci.lb)
+df_tidy_if$ymax<- z2r(preds$ci.ub)
+
+plt_color <- "deeppink4"
+ggplot(df_tidy_if, aes(x = impact_factor, y = z2r(z))) + 
+  geom_jitter(aes(size = n), shape = 21, 
+              fill = alpha(plt_color, 0.5), 
+              color = plt_color,
+              width = 0.2) + 
+    geom_hline(yintercept=0, linetype = 2) +
+    geom_line(aes(y = y, x = impact_factor), color = plt_color) + 
+    geom_ribbon(aes(ymin = ymin, ymax = ymax), alpha = 0.3) +
+    labs(y = expression(paste("Effect size (", italic("r"), ")")), x = "Impact Factor") +  
+    theme_minimal() +
+    theme(
+        axis.line.y = element_line(color = "black"),
+        axis.text = element_text(color = "black", size = 12),
+        axis.title = element_text(color = "black", size = 14),
+        legend.position = "none"
+    )
+
+#print(summary(lin))
+#print(z2r(coefficients(lin)))
+#print(z2r(lin$ci.lb))
+#print(z2r(lin$ci.ub))
+```
+
+\clearpage
+
+```{r cooks_dist_study, dev ="cairo_pdf", fig.height = 6, fig.pos = "h", fig.cap = "Cook's distance values for each study (blue dots) and average Cook's distance over all studies (dashed vertical red line). The Cook's distance for a given study can be interpreted as the distance between the entire set of predicted values with this study included and when this study is excluded from the model fitting procedure."}
 
 ### Cook's distances for each study!
 cooks_dist <- cooks.distance(res_full, cluster=df_full$id)
@@ -383,42 +434,43 @@ df_cooks$authors <- str_remove(df_cooks$authors, "^\\s")
 df_cooks <- df_cooks %>%
               filter(!duplicated(authors)) %>%
               arrange(authors)
-
+df_cooks$authors <- author_format(df_cooks$authors)
 ggplot(data = df_cooks, aes(x = authors, y = cooks_dist, group = 1)) + 
   geom_point(color = "deepskyblue4") +
   geom_line(color = "deepskyblue4") + 
   geom_segment(aes(xend=authors), yend = 0, color = "darkgrey", linetype = 2) + 
   geom_hline(yintercept = mean(cooks_dist), color = "darkred", linetype = 2) + 
-  xlab("Studies") + ylab("Cook's Distance") + 
+  xlab("Studies") + ylab("Cook\u2019s distance") + 
   scale_x_discrete(limits = rev(df_cooks$authors)) + 
   theme_minimal() + 
   theme(
-        axis.text = element_text(color = "black"),
         axis.line = element_line(color = "black"),
+        axis.text.y = element_markdown(color = "black"),
+        axis.text.x = element_text(color = "black", size = 8),
   ) + 
   coord_flip() 
-
 ```
 
 \clearpage
 
 
-```{r check_outliers, fig.pos = "H", fig.cap = "Boxplot and distribution of effect size values (dots) of the two studies identified as outliers. The x-axis shown the to the Pearson \\textit{r} effect size. The green vertical dashed line is the summary effect obtained in the intercept-only model."}
+```{r check_outliers, dev = "pdf", fig.pos = "H", fig.cap = "Boxplot and distribution of effect size values (dots) of the two studies identified as outliers. The x-axis shown is the Pearson \\textit{r} effect size. The green vertical dashed line is the summary effect obtained in the intercept-only model."}
 outliers <- df_cooks[which(df_cooks$cooks_dist > mean(df_cooks$cooks_dist)), ]$id
 
 df_outliers <- df_full[which(df_full$id %in% outliers), ]
 
+df_outliers$authors <- author_format(df_outliers$authors)
 ggplot(data = df_outliers, aes(x = z2r(z), y = id)) + 
   geom_boxplot(aes(color = id), fill = NA, width = 0.3) + 
   geom_jitter(height = 0.1, aes(color = id)) + 
   scale_color_brewer(palette = "Set2") + 
   scale_y_discrete(labels = rev(unique(df_outliers$authors))) + 
-  xlab("Effect size (r)") +
+  xlab(expression(paste("Effect size (", italic("r"), ")"))) +
   geom_vline(xintercept = z2r(res_main$b), color = "chartreuse4", linetype = 2) + 
   theme_minimal() + 
   theme(
     axis.title.y = element_blank(),
-    axis.text.y = element_text(size = 11, color = "black"),
+    axis.text.y = element_markdown(size = 11, color = "black"),
     axis.text.x = element_text(size = 11, color = "black"),
     axis.line.x = element_line(color = "black"),
     legend.position = "none"
@@ -426,25 +478,28 @@ ggplot(data = df_outliers, aes(x = z2r(z), y = id)) +
 
 ```
 
-\clearpage
-
-\subsection{Model output without outliers}
-
 ```{r df_no_outliers}
 df_no_outliers <- df_full[-which(df_full$id %in% outliers), ]
 ```
 
-```{r no_outliers, echo = TRUE}
+```{r no_outliers, echo = FALSE}
 res_no_outliers <- rma.mv(z, var, random = ~1 | id/entry, 
                    mods = ~ index + bio + environ + diversity_source, 
                    data = df_no_outliers)
-res_no_outliers
+#res_no_outliers
+res_no_outliers_tbl <- model_res_table(res_no_outliers)
+res_no_outliers_tbl$Coefficients <- final_mod_names(res_no_outliers_tbl$Coefficients)
+kable(res_no_outliers_tbl, digits = 3, align = "lrrc", booktabs = TRUE,
+      caption = "Model estimates for the meta-regression over the data set without outliers. All values are Pearson correlation \\textit{r}. SE is the standard error, CI the confidence interval. Full model output can be found in the online supplementary material.") %>%
+  kable_styling(latex_options = c("striped", "HOLD_position"),
+                full_width = FALSE) %>%
+   row_spec(0, bold = TRUE) 
 ```
 
+\clearpage
 
-\vspace{1cm}
+```{r outliers_model_plt, fig.pos = "ht", fig.cap = "Contrast of model estimates obtained with meta-regression analysis using the full data set (yellow) and over the data set with outliers removed (blue). Estimates are represented by circles and corresponding 95% confidence intervals by horizontal lines. Each estimate (except the intercept) corresponds to the additive effect of each coefficient as obtained with the \\textit{predict\\_rma} function from \\textit{metafor} R package. Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero. We considered as outliers every study that had a Cook’s distance value higher than the mean of all Cook distances (see Fig.S5). Model moderators were acoustic indices (ADI, AEI, AR, BIO, H, NDSI, with ACI as intercept), diversity metric (Species abundance, Species diversity, Abundance of sounds, with Species richness as intercept), environment (Aquatic, with Terrestrial as intercept), diversity source (Acoustic, with Non-Acoustic as intercept). The solid vertical black line represents a null effect size. See Table 2 for definitions of acoustic indices."}
 
-```{r outliers_model_plt, fig.cap = "Contrast of model estimates obtained with meta-regression analysis using the full data set (yellow) and over the data set with outliers removed (blue). Estimates are represented by circles and corresponding 95% confidence intervals by horizontal lines. Each estimate corresponds to the additive effect when a moderator level is replaced in the intercept (e.g. ADI is the additive effect of ADI when ADI is used as th intercept instead of ACI). Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero. We considered as outliers every study that had a Cook’s distance value higher than the mean of all Cook distances (see Fig.5). Model moderators were acoustic indices (ADI, AEI, AR, BIO, H, NDSI, with ACI as intercept), diversity metric (Species abundance, Species diversity, Abundance of sounds, with Species richness as intercept), environment (Aquatic, with Terrestrial as intercept), diversity source (Acoustic, with Non-Acoustic as intercept). The solid vertical black line represents a null effect size.See Table 2 for definitions of acoustic indices"}
 df_pred_tbl <- get_predictions(res_full, format_table = TRUE, clean_labels = TRUE)
 df_pred_tbl$Coefficients <- final_mod_names(df_pred_tbl$Coefficients)
 df_pred <- get_predictions(res_full)
@@ -474,10 +529,10 @@ ggplot(data = df_examine_outliers, aes(x = estimate, y = coef, color = df, posit
     geom_vline(xintercept = 0, linetype = 1, color = "black") + 
     #scale_y_discrete(labels =  rev(y_labels)) +
     scale_color_manual(values = plt_colors, name = "Dataset", 
-                       labels = c("No outliers", "Full dataset")) + 
+                       labels = c("No outliers", "Full data set")) + 
     geom_hline(yintercept= seq(1, n_rows - 1) + 0.5, linetype = 3, color = "black") + 
     theme_minimal() + 
-    xlab("Effect size (r)") +
+    xlab(expression(paste("Effect size (", italic("r"), ")"))) +
     theme(axis.text.x = element_text(size = 12, color = "black"),
           axis.text.y = element_text(size = 12, color = "black"),
           axis.line.x = element_line(color = "black"),
@@ -485,29 +540,8 @@ ggplot(data = df_examine_outliers, aes(x = estimate, y = coef, color = df, posit
           axis.title.y = element_blank(),
           axis.title.x = element_text(size = 14),
           panel.grid.major.y = element_blank(),
-          legend.title = element_text(hjust = 0.5, size = 12),
+          legend.title = element_blank(),
           legend.text = element_text(size = 11),
           legend.position = "top"
-    )
-```
-
-\clearpage
-
-```{r effect_size_impact_factor, fig.pos = "H", fig.cap = "Relationship between effect size mean values (circles) and journal impact factor. Circle size indicates the relative sample size for each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region shaded grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the impact factor axis with minor random noise to reduce overlapping."}
-plt_color <- "deeppink4"
-ggplot(df_tidy, aes(x = impact_factor, y = z2r(z))) + 
-  geom_jitter(aes(size = n), shape = 21, 
-              fill = alpha(plt_color, 0.5), 
-              color = plt_color,
-              width = 0.2) + 
-    geom_hline(yintercept=0, linetype = 2) +
-    geom_smooth(method='lm', color = plt_color) +
-    labs(y = "Effect size (r)", x = "Impact Factor") +  
-    theme_minimal() +
-    theme(
-        axis.line.y = element_line(color = "black"),
-        axis.text = element_text(color = "black", size = 12),
-        axis.title = element_text(color = "black", size = 14),
-        legend.position = "none"
     )
 ```

@@ -79,20 +79,20 @@ tidy_data <- function(df, n_used = "n_adjusted", rm_id = 54,
 
 clear_moderators <- function(df,
 			     mods = c("taxa", "bio", "diversity_source", "index"),
-                             lower_nr = 5){
+                             lower_nr = 5, verbose = TRUE){
 
-    cat("Levels dropped from dataframe:")
+    if(verbose) cat("Levels dropped from dataframe:")
     for(mod in mods){
         if(!is.factor(df[[mod]])){
           df[[mod]] <- as.factor(df[[mod]])
         }
-        cat(sprintf("\n\tModerator %s", mod, "\n\t"))
+        if(verbose) cat(sprintf("\n\tModerator %s", mod, "\n\t"))
         nr_entries <- apply(table(df[[mod]], df$id), 1,
                             function(x) length(which(x > 0)))
         less_5 <- names(which(nr_entries < lower_nr))
         df <- filter(df, !(.data[[mod]] %in% less_5))
         df[[mod]] <- droplevels(df[[mod]])
-        cat("\n\t\t", less_5)
+        if(verbose) cat("\n\t\t", less_5)
 
         # Relevel some factors
         if(mod == "diversity_source"){
@@ -105,7 +105,7 @@ clear_moderators <- function(df,
             df[[mod]] <- relevel(df[[mod]], ref = "richness")
         }
     }
-    cat("\n\n")
+    if(verbose) cat("\n\n")
     invisible(df)
 }
 
@@ -177,12 +177,20 @@ multilevel_I <- function(rma_mv_res){
 get_predictions <- function(res_rma, intercept = TRUE, format_table = FALSE,
                             clean_labels = FALSE, transform_to_r = FALSE){
 
+    row_names <- rownames(res_rma$b)
+    n_params <- nrow(res_rma$b)
     names_columns = c("coef", "estimate", "se", "ci.lb", "ci.ub")
-    df_pred <- cbind(rownames(res_rma$b), res_rma$b, res_rma$se,
-                     res_rma$ci.lb, res_rma$ci.ub)
+    df_pred <- as.data.frame(matrix(nrow = n_params,
+                                    ncol = length(names_columns)))
     colnames(df_pred) <- names_columns
-    df_pred <- as.data.frame(df_pred)
-    rownames(df_pred) <- NULL
+    for(i in 1:n_params){
+        lev <- row_names[i]
+        spot_lev <- vector(mode = "numeric", length = n_params)
+        spot_lev[grep(lev, rownames(res_rma$b))] <- 1
+        if(intercept){ spot_lev <- spot_lev[-1]}
+        df_pred[i,] <- c(lev, unlist(predict(res_rma, spot_lev),
+                                     intercept)[1:4])
+    }
     df_pred <- mutate_at(df_pred, 2:ncol(df_pred), as.numeric) %>%
                     mutate_if(is.numeric, z2r) %>%
                     mutate_if(is.numeric, round, 3)
@@ -252,6 +260,8 @@ compare_moderators <- function(df, res, moderator, ref_level){
     df_comparisons <- df_comparisons %>%
                         mutate_at(2:ncol(df_comparisons), as.numeric)
 
+    colnames(df_comparisons) <- c("Compared", "Estimate", "SE", "CI.lb", "CI.ub",
+                                  "\\textit{Q\\textsubscript{M}}", "\\textit{p}")
     return(df_comparisons)
 }
 
@@ -391,4 +401,92 @@ final_mod_names <- function(names_vec, shorter = FALSE){
         str_replace("no_acoustic", "Non acoustic") %>%
 
     return(names_vec)
+}
+
+# Replace hyphen by minus sign. To use before kable
+# Alignment must be fixed to right alignment
+place_minus <- function(x, pad_width = 10){
+  x <- as.character(x)
+  x <- str_pad(x, width = pad_width, pad = "0", side = "right")
+  x <- str_match(x, "-?\\d+.\\d{3}")[, 1]
+  x <- gsub("-", "--", x)
+  return(x)
+}
+
+author_format <- function(x, markup = "markdown"){
+
+  x <- gsub("Izaguirre et al.", "Retamosa Izaguirre & Ramírez-Alán", x)
+  x <- gsub("Hawkin", "Hawkins", x)
+  x <- gsub("Wa ", "wa ", x)
+  x <- gsub("McLaren", "McLaren & DeGroote", x)
+  x <- gsub("Moreno-Gomez", "Moreno-Gómez et al.", x)
+  x <- gsub("Patrick Lyon", "Lyon", x)
+
+  if(markup == "markdown"){
+    x <- gsub("et al", "*et al*", x)
+  }else if(markup == "latex"){
+    x <- gsub("et al", "\\\\textit{et al}", x)
+    x <- gsub("&", "\\\\&", x)
+  }else if(markup == "html"){
+    x <- gsub("et al", "<em>et al</em>", x)
+  }
+  x <- str_replace(x, "\\d+", "(\\0)")
+
+  return(x)
+}
+
+model_res_table <- function(res_rma, format_table = TRUE, y_labels = NULL,
+                            clean_labels = TRUE, transform_to_r = FALSE){
+
+    names_columns = c("coef", "estimate", "se", "ci.lb", "ci.ub")
+    df_pred <- cbind(rownames(res_rma$b), res_rma$b, res_rma$se,
+                     res_rma$ci.lb, res_rma$ci.ub)
+    colnames(df_pred) <- names_columns
+    df_pred <- as.data.frame(df_pred)
+    rownames(df_pred) <- NULL
+    df_pred <- mutate_at(df_pred, 2:ncol(df_pred), as.numeric) %>%
+                    mutate_if(is.numeric, z2r) %>%
+                    mutate_if(is.numeric, round, 3)
+    df_pred$coef <- factor(df_pred$coef,
+                           levels = rev(rownames(res_rma$b)))
+    if(transform_to_r){
+        df_pred$estimate <- z2r(df_pred$estimate)
+    }
+    # Some formatting to print table
+    if(!format_table){
+        return(df_pred)
+    }
+    if(is.null(y_labels)){
+      y_labels <- c("Intercept",
+                    "Index ADI", "Index AEI", "Index AR",
+                    "Index BIO", "Index H", "Index NDSI",
+                    "Bio abundance", "Bio diversity",
+                    "Bio sound abundance", "Environment Aquatic", "Source acoustic")
+    }
+    moderators <- str_match(y_labels, "(\\w*)")[, 2]
+    moderators[1] <- y_labels[1]
+    # Get predictions
+    df_pred$moderators <- factor(moderators, levels = unique(moderators))
+    df_pred <- mutate_if(df_pred, is.numeric, place_minus)
+    df_pred <- df_pred %>%
+                    mutate(CI = paste0("[", ci.lb, ", ", ci.ub, "]")) %>%
+                    select(Coefficients = coef,
+                           Estimate = estimate,
+                           SE = se, CI, -ci.lb, -ci.ub,)
+    # Smaller labels to try new aesthetics
+    small_labels <- str_match(y_labels, "\\w\\s(.*)")[, 2]
+    # Capitalize first letter
+    small_labels <- sapply(small_labels,
+                           function(x){
+                               caps <- toupper(x)
+                               caps <- str_sub(caps, 1, 1)
+                               new_x <- paste0(caps, str_sub(x, 2))
+                           })
+    small_labels[1] <- y_labels[1]
+    names(small_labels) <- NULL
+    if(clean_labels){
+        df_pred$Coefficients <- small_labels
+    }
+
+    return(df_pred)
 }

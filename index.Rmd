@@ -33,12 +33,15 @@ csl: "biological-reviews.csl"
     require(kableExtra)
     require(pander)
     require(ggplot2)
+    require(ggtext)
     require(RColorBrewer)
   
     source("src/acoustic_indices_functions.R")
 ```
 
-This web page is a detailed description of the procedures followed to conduct the systematic review and meta-analysis. Our aim was to evaluate the performance of the commonly used acoustic indices as proxies for biodiversity. The repository used to create this document can be found here: https://github.com/irene-alcocer/Acoustic-Indices 
+This web page is a detailed description of the procedures followed to conduct the systematic review and meta-analysis published in *Biological Reviews*. Our aim was to evaluate the performance of the commonly used acoustic indices as proxies for biodiversity. The repository used to create this document can be found here: https://github.com/irene-alcocer/Acoustic-Indices 
+
+Figures and tables in this web page, follows the numbering used in the manuscript and supplementary material.
 
 # Systematic review
 
@@ -46,7 +49,7 @@ We extensively searched existing literature for studies assessing the use of aco
 
 1. We compiled studies that used acoustic diversity indices from three recent literature reviews on acoustic indices, biodiversity assessment and passive acoustic monitoring (i.e., @sueur2014acoustic; @buxton2018efficacy; @sugai2019terrestrial). 
 2. We updated the literature database from 2017 up to July 2019 with Thompson’s ISI Web of Science (WoS), querying the database for the keywords (i.e. bioacoustic∗ AND ind∗, ecoacoustic∗, acoustic∗ AND biodiversity, soundscape AND ecology). This search was restricted to 9 WoS subject areas (i.e., zoology, environmental sciences ecology, behavioural sciences, biodiversity conservation, marine freshwater biology, acoustics, evolutionary biology, entomology, and remote sensing).
-3. Additionally, we used Google Scholar to compile all literature from 2017 to July 2019 that (i) cited any of these new papers published within this period or (ii) cited the papers originally describing the 11 selected indices (see Table 2 on the manuscript). 
+3. Additionally, we used Google Scholar to compile all literature from 2017 to July 2019 that (i) cited any of these new papers published within this period or (ii) cited the papers originally describing the 11 selected indices (*see Table 2 on the manuscript*). 
 
 Both peer-reviewed and no peer-reviewed studies were included to avoid publication bias.
 
@@ -60,13 +63,14 @@ We considered studies eligible for meta-analysis if they met the following inclu
 (iii)  employed at least one of these five metrics to describe biodiversity, namely species abundance, species richness, species diversity (i.e., Shannon index, Simpson index, and Pielou's evenness), abundance of sounds, and diversity of sounds; and  
 (iv)  provided statistical or graphical information of a univariate relationship between a single acoustic index and a single diversity metric.
 
-Following such inclusion criteria, we screened all selected studies (n = 1,079) based on their abstract, titles and keywords and thereby retaining 142 studies which were identified as potentially eligible. To ascertain their relevance, we conducted a full-text assessment on all these studies, finally retaining 35 studies that passed through all the criteria. 
+Following such inclusion criteria, we screened all selected studies (n = 1,079) based on their abstract, titles and keywords and thereby retaining 142 studies which were identified as potentially eligible. To ascertain their relevance, we conducted a full-text assessment on all of these studies, finally retaining 35 studies that passed through all the criteria. 
 
 ```{r temporal.evo}
 knitr::include_graphics("rmd/Fig.S1.png")
 ```
 <div id="fig-caption">
-  <b>Figure 3 -</b> Temporal evolution (2007 – 2019) of the validation data from the total of 142 articles. Articles which correlate the acoustic indices with real biological data are represented with an orange line and studies which do not correlate with a green line
+  <b>Figure 3 -</b> 
+  Temporal evolution (2007–2019) of validation data from a total of 142 articles. Articles that correlate the acoustic indices with real biological data are represented by an orange line and studies that did not correlate acoustic indices with such data are shown with a green line.
 </div>
 
 ## Data extraction
@@ -76,19 +80,19 @@ knitr::include_graphics("rmd/Fig.S1.png")
 For each study:
 
 - We retrieved the acoustic diversity indices calculated and related to biological diversity.
-- We classified the diversity estimates that were measured and related to acoustic indices into five types:**Species Abundance**, number of individuals of a single or several species;**Species richness**, number of vocal and/or non-vocal species;**Species diversity**, including more complex diversity indices that also consider species abundance (i.e., Shannon index, Simpson index or species evenness);**Abundance of sounds**, number of sounds by identified or not identified species;**Diversity of sounds**, number of sounds types by identified or not identified species.
+- We classified the diversity estimates that were measured and related to acoustic indices into five types: **Species Abundance**, number of individuals of a single or several species; **Species richness**, number of vocal and/or non-vocal species; **Species diversity**, including more complex diversity indices that also consider species abundance (i.e., Shannon index, Simpson index or species evenness); **Abundance of sounds**, number of sounds by identified or not identified species; **Diversity of sounds**, number of sounds types by identified or not identified species.
 - We described the method applied to obtain such biological information based on two variables: **Acoustic**, data extracted from audio recordings; **Non-acoustic**, data extracted from sources other than recordings, i.e., literature, field surveys, etc.
 - We included the environment type: **Terrestrial** and **Aquatic**.
-- And studied taxonomic groups: **invertebrates**, **fish**, **anurans**, **mammals**, **birds** or **several**. 
 
 *Handling of pseudoreplication*  
 
-To account for differences in sampling effort among studies and to support the detection of cases of pseudoreplication (i.e., inadequate specification of the number of independent observations when applying statistical analysis) that might potentially lead to biased statistical tests, we extensively assessed the sampling design and statistics of each study. We identified eight features that summarized both spatial and temporal sampling and statistical tests of all the selected articles. When a mismatch between sample size and the number of true replicates was identified, we classified the analysis as using inflated replication and used true replicates as our sample size for meta-analysis (see methods- Sampling design and pseudoreplication in the manuscript and Supplementary Table 1).
+To account for differences in sampling effort among studies and to support the detection of cases of pseudoreplication (i.e., inadequate specification of the number of independent observations when applying statistical analysis) that might potentially lead to biased statistical tests, we extensively assessed the sampling design and statistics of each study. We identified eight features that summarized both spatial and temporal sampling and statistical tests of all the selected articles. When a mismatch between sample size and the number of true replicates was identified, we classified the analysis as using inflated replication and used true replicates as our sample size for meta-analysis (*see Methods- Sampling design and pseudoreplication in the manuscript*).
 
 ### Feature extraction
 
 <div id="fig-caption">
-  <b>Supplementary Table 3 -</b> List of the 35 features used to characterize studies that tested the relationship between acoustic indices and diversity metrics.
+  <b>Table S3 -</b> 
+  List of the 34 features used to characterise studies that tested the relationship between acoustic indices and diversity metrics.
 </div>
 ```{r data_features_table}
 feature_rows <- c(5, 4, 4, 4, 6, 11)
@@ -143,8 +147,8 @@ kbl(features_tbl, format = "html") %>%
    row_spec(0, font_size = 16, bold = TRUE) %>%
    column_spec(1, bold = TRUE) %>%
    column_spec(2, extra_css = 'vertical-align: top !important;') %>%
-   collapse_rows(columns = 1, valign = "top") %>%
    row_spec(c(1:5, 10:13, 18:23), background = "#eeeeee") %>%
+   collapse_rows(columns = 1, valign = "top") %>%
    kable_classic()
 ```
 
@@ -157,7 +161,7 @@ When Pearson’s correlation, r, was not reported, we extracted other statistics
 
 We converted our effect size r to Fisher’s Z in order to satisfy the normality assumption of parametric meta-analysis [@nakagawa2007effect]. Fisher’s Z values were converted back to r, to ease interpretation of results. 
 
-## Dataset
+## Data set
 
 We collected a total of 481 effect sizes from 35 studies. For the meta-analysis, these number was reduced to 364 effect sizes and 34 studies, after computing composite effect sizes between non-independent effect sizes and removing a study due to difficulty in describing the study design. For the literature review, we kept the original 35 studies.
 
@@ -178,7 +182,7 @@ We collected a total of 481 effect sizes from 35 studies. For the meta-analysis,
 </div>
 
 <div id="fig-caption">
-  <b>Supplementary Table 1 -</b> Complete dataset used in meta-analysis.
+  <b>Table S1 -</b> Data set used in the study.
 </div>
 ```{r dataset}
 kable(df_tidy, format = "html") %>%
@@ -188,7 +192,7 @@ kable(df_tidy, format = "html") %>%
 <br>
 
 <div id="fig-caption">
-  <b>Supplementary Table 2 -</b> Variable descriptions for Supplementary Table  1.
+  <b>Table S2 -</b> Variable descriptions for Table S1.
 </div>
 ```{r variable_description}
 vd <- data.frame(Variables = c("id", "entry", "year", "impact_factor", "index",
@@ -214,19 +218,21 @@ vd <- data.frame(Variables = c("id", "entry", "year", "impact_factor", "index",
 pander(vd, justify = "left")
 ```
 
-## Dataset overview
+## Data set overview
 
-In what follows, we provide an overview of the dataset mostly presented within tables and figures.
+In what follows, we provide an overview of the data set used in the meta-analysis.
 
-Our dataset comprised a total of 34 studies and 364 effect sizes. Therefore, most studies contributed with more than one effect size for the meta-analysis.
+Our data set comprised a total of 34 studies and 364 effect sizes. Therefore, most studies contributed with more than one effect size for the meta-analysis.
 
 <div id="fig-caption">
-  <b>Supplementary Table 4 -</b> Number of effect sizes collected from each of the 34 studies included in the meta-analysis. ID corresponds to the study identification number in our dataset.
+  <b>Table S4 -</b> Number of effect sizes collected from each of the 34 studies included in the meta-analysis. ID corresponds to the study identification number in our data set.
 </div>
 ```{r samplesizes_tables_studies}
 studies_n <- as.data.frame(table(df_tidy$id), stringsAsFactors = FALSE)
 studies_n <- cbind(unique(df_tidy$authors), studies_n)
 colnames(studies_n) <- c("Study", "ID", "Effect_sizes")
+studies_n$Study <- author_format(studies_n$Study, markup = "markdown")
+
 studies_n <- studies_n %>%
               select(ID, Study, Effect_sizes) %>%
               arrange(-Effect_sizes)
@@ -240,7 +246,7 @@ kable(studies_n, format = "html") %>%
 The most studied acoustic index was ACI and the most used biodiversity metric was species richness.
 
 <div id="fig-caption">
-  <b>Supplementary Table 5 -</b> Number of effect sizes and studies per moderator levels.
+  <b>Table S5 -</b> Number of effect sizes and studies per moderator level.
 </div>
 ```{r samplesizes_tables_moderators}
 # Table for moderator levels
@@ -275,7 +281,7 @@ Most studies were conducted in the USA, France, Australia and Brazil.
 knitr::include_graphics("rmd/mapa.png")
 ```
 <div id="fig-caption">
-  <b>Figure 5a -</b> The geographic distribution of the study sites corresponding to the 35 studies used in the literature review. The colouring of countries exhibits a white to black gradient relative to an increase in the number of studies contributed by each country. The coloured dots discriminate between different groups of studied taxa.
+  <b>Figure 5A -</b> The geographic distribution of the study sites corresponding to the 35 studies used in the literature review. The colouring of countries exhibits a white to black gradient relative to an increase in the number of studies contributed by each country. The coloured dots discriminate between different groups of studied taxa.
 </div>
 
 <br>
@@ -285,7 +291,7 @@ The performance of acoustic diversity indices as a biodiversity indicators was m
 knitr::include_graphics("rmd/heatmap.png")
 ```
 <div id="fig-caption">
-  <b>Figure 5b -</b> Distribution of the number of articles by diversity metric, taxa and acoustic index studied, from the 35 studies included in the literature review.
+  <b>Figure 5B -</b> Distribution of the number of articles by diversity metric, taxa and acoustic index studied, from the 35 studies included in the literature review.
 </div>
 
 <br>
@@ -295,7 +301,7 @@ A large set of studies (40%) exhibited statistical deficiencies in testing the r
 knitr::include_graphics("rmd/ps.index.png")
 ```
 <div id="fig-caption">
-  <b>Supplementary Figure 1 -</b> Pseudoreplication summary. The data is representing the total number of articles for each index. Color orange represents number of pseudo-replicated studies and green non pseudo-replicated studies. The article (Papin et al., 2019b) was withdrawn from the pseudoreplication analysis due to impossibility of obtaining the pseudoreplication data causing some variation on the total number of each acoustic index..
+  <b>Figure S1 -</b> Pseudoreplication summary. 
 </div>
 
 
@@ -316,7 +322,7 @@ res_main
 </div>
 
 <div id="fig-caption">
-  <b>Supplementary Table 6 -</b> Resulting estimates from intercept-only model converted to Pearson's correlation. "Estimate" is the Pearson's r summary effect size. "CI.lb" and "CI.ub" are the confidence intervals lower and upper bounds, respectively.
+  <b>Table S7 -</b> Resulting estimates from intercept-only model converted to Pearson's correlation. "Estimate" is the Pearson's r summary effect size. "CI.lb" and "CI.ub" are the confidence intervals lower and upper bounds, respectively.
 </div>
 ```{r meta_overall_r, }
 r_main <- sapply(c(r = res_main$b, CI.lb = res_main$ci.lb, CI.ub = res_main$ci.ub), z2r)
@@ -325,7 +331,7 @@ names(r_main_pander) <- c("Estimate", names(r_main)[2:3])
 pander(r_main_pander)
 ```
 
-The summary estimate indicates that acoustic indices showed a moderate correlation with diversity metrics. However, this result shows differences in performance between acoustic indices or context-dependencies due to, for example, different environments or diversity metrics. For this, we would need to inspect moderators, although it is necessary to check before if our intercept-only model has unexplained variance that can be partitioned by our chosen moderators. 
+The summary estimate indicates that acoustic indices showed a moderate correlation with diversity metrics. However, this result is an overall estimate and thus can hide differences in performance between acoustic indices or context-dependencies due to, for example, different environments or diversity metrics. For this, we would need to inspect moderators, but before it is necessary to check before if our intercept-only model has unexplained variance that can be partitioned by our chosen moderators. 
 
 ### Effect sizes in ascending order
 
@@ -355,7 +361,7 @@ ggplot(data = df_all_plt, aes(x = z, y = reorder(entry, -z))) +
     annotate("text", x = -1.4, y = overall_y, label= "Overall estimate", size = 4, adj = "right") + 
     scale_y_discrete(expand = c(0.025, 0.01)) +
     xlab("Effect size (r)") +
-    ylab("Dataset entries ordered by effect size magnitude") +
+    ylab("Data set entries ordered by effect size magnitude") +
     theme_minimal() + 
     theme(axis.text.x = element_text(size = 12, color = "black"),
           axis.text.y = element_blank(),
@@ -368,7 +374,8 @@ ggplot(data = df_all_plt, aes(x = z, y = reorder(entry, -z))) +
 
 ```
 <div id="fig-caption">
-  <b> Figure 6A -</b> Pearson correlation effect sizes (r) in ascending order of magnitude from all dataset entries. Effect sizes higher than 0 (vertical line) represent a positive correlation between acoustic indices and diversity. Effect sizes below 0 indicate a negative correlation between acoustic indices and diversity. The green circles above the dashed horizontal line, are effect sizes means and the grey horizontal lines are the corresponding 95% confidence intervals. Below the dashed line is the summary effect size (green circle) and the corresponding 95% confidence interval (grey horizontal lines) obtained after running the intercept-only model.
+  <b> Figure 6A -</b> 
+  Pearson correlation effect sizes (<em>r</em>) in ascending order of magnitude from all data set entries. Effect sizes larger than 0 (vertical line) represent a positive correlation between acoustic indices and diversity. Effect sizes below 0 indicate a negative correlation between acoustic indices and diversity. Above the dashed horizontal line, the green circles are effect sizes means, with corresponding 95% confidence intervals (grey horizontal lines). Below the dashed line, the green circle is the overall effect size, with a corresponding 95% confidence interval, obtained from the intercept-only meta-analysis.
 </div>
 
 
@@ -379,7 +386,7 @@ We quantified heterogeneity with the I² statistic, which estimates the proporti
 <br> 
 
 <div id="fig-caption">
-  <b>Supplementary Table 7 -</b> Unaccounted heterogeneity of the intercept-only model as measured by I^2^ statistic. Within study heterogeneity (level 2) corresponds to the unaccounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unaccounted variation between studies (level 3).
+  <b> Web Supplementary Table 1 -</b> Unaccounted heterogeneity of the intercept-only model as measured by I^2^ statistic. Within study heterogeneity (level 2) corresponds to the unaccounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unaccounted variation between studies (level 3).
 </div>
 ```{r meta_hetero}
 font_css <- "font-family: Arial"
@@ -404,12 +411,12 @@ kable(Is_df, format = "html", digits = 2) %>%
 mlm.variance.distribution(res_main)
 ```
 <div id="fig-caption">
-  <b>Supplementary Figure 2 -</b> Visual representation of how variance was distributed over the multilevel structure of the intercept-only model. Within study heterogeneity (level 2) corresponds to the unaccounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unaccounted variation between studies (level 3).
+  <b>Figure S2 -</b> Visual representation of how variance was distributed over the multilevel structure of the intercept-only model. Within study heterogeneity (level 2) corresponds to the unaccounted variation that is found on effect sizes within studies, and between study heterogeneity corresponds to the unaccounted variation between studies (level 3).
 </div>
 
 <br>
 
-The value of I^2^ = 85% corresponding to the amount of heterogeneity that remains unaccounted for in the intercept-only model, gives a green signal to proceed with the use of moderators that can potentially explain some of this variation. 
+The value of I^2^ = 85% corresponds to the amount of heterogeneity that remains unaccounted for in the intercept-only model, and gives a green signal to proceed with the use of moderators that can potentially explain some of this variation. 
 
 ## Analysis of moderators
 We extended the previous intercept-only model with the inclusion of moderators as fixed factors. For these analyses, all moderator levels with less than 5 studies were excluded as low study sizes are more liable to produce biased estimates. This led to the removal of the acoustic indices ‘Hf’, ‘Ht’, ‘M’ and ‘NP’, and the diversity metric ‘diversity of sounds’ from model fitting procedures. 
@@ -436,7 +443,7 @@ res_indices
 
 
 <div id="fig-caption">
-  <b>Supplementary Table 8 -</b> Resulting estimates from sub-group analysis. The 'Estimate' column is the Pearson correlation effect size; SE is the standard error and CI.lb and CI.up; and the lower and upper bounds of the confidence intervals, respectively.
+  <b>Table S8 -</b> Resulting estimates from sub-group analysis. The 'Estimate' column is the Pearson correlation effect size; SE is the standard error and CI.lb and CI.up; and the lower and upper bounds of the confidence intervals, respectively.
 </div>
 ```{r meta_indices_tbl, align = "center"}
 df_pred_indices <- get_predictions(res_indices, intercept = FALSE)
@@ -481,7 +488,8 @@ ggplot(data = df_indices_plt, aes(x = es, y = index)) +
    
 ```
 <div id="fig-caption">
-  <b> Supplementary Figure 3 -</b> Effect size mean estimates (circles) and corresponding 95% confidence intervals (horizontal lines) obtained from sub-group meta-analysis with acoustic indices as the grouping factor. Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero. The dashed green vertical line represents the summary effect size obtained from the intercept only meta-analysis.
+  <b> Figure S3 -</b> 
+  Effect size mean estimates (circles) and corresponding 95% confidence intervals (horizontal lines) obtained from sub-group meta-analysis with acoustic indices as the grouping factor. Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero. The dashed green vertical line represents the summary effect size obtained from the intercept only meta-analysis.
 </div>
 
 <br>
@@ -524,7 +532,7 @@ res_full
 Multicollinearity among our moderators was inspected with VIF and found not to be an issue in our model (VIF < 1.7 for all moderators, threshold value of 3 [@zuur2010protocol].
 
 <div id="fig-caption">
-  <b>Supplementary Table 9 -</b> VIF values obtained for each moderator level.
+  <b>Table S6 -</b> VIF values obtained for each moderator level.
 </div>
 ```{r collinearity}
 vif_meta <- vif.rma(res_full, table = TRUE)$vif["vif"][-1, , drop = FALSE]
@@ -540,7 +548,7 @@ pander(vif_meta)
 
 #### **Heterogeneity full model**
 
-Substantial heterogeneity remained to be explained after fitting the full model. Therefore, other factors not tested or an interaction among our moderators could have the ability to extract even more information from the dataset. For the latter, an increase in available studies on the correlation between acoustic indices and biodiversity is of the utmost important.
+Substantial heterogeneity remained to be explained after fitting the full model. Therefore, other factors not tested or an interaction among our moderators could have increased the ability to extract even more information from the data set. For the latter, it is important to conduct more studies on the correlation between acoustic indices and biodiversity in order to allow the computation of more complex models.
 
 <div class="fold o">
 ```{r heterogeneity_full_model}
@@ -562,7 +570,7 @@ cat("Heterogenity after fitting the full model\n\t", sum_I_full, "\n\n",
 #### **Full model results**
 
 <div id="fig-caption">
-  <b> Web Supplementary Table 1 -</b> Table used to plot Supplementary Figure 6. Each estimate corresponds to the additive effect when a moderator level is replaced in the intercept (e.g. ADI is the additive effect of ADI when ADI is put as intercept instead of ACI). The column "Coefficients" lists the model intercept and the levels of each moderator. The column "Estimate" is the estimated Pearson (r) correlation. "SE" is the standard error of the estimate. "CI" are the [lower] [upper] bounds of the confidence intervals.
+  <b> Web Supplementary Table 2 -</b> Table used to plot Figure 6B. Each estimate corresponds to the predicted effect of each moderator using the *predict_rma* function from *metafor*. The column "Coefficients" lists the model intercept and the levels of each moderator. The column "Estimate" is the estimated Pearson (r) correlation. "SE" is the standard error of the estimate. "CI" are the [lower] [upper] bounds of the confidence intervals.
 </div>
 ```{r mod_level_estimates}
 df_pred_tbl <- get_predictions(res_full, format_table = TRUE, clean_labels = TRUE)
@@ -601,7 +609,8 @@ ggplot(data = df_pred, aes(x = z2r(estimate), y = coef,
 
 ```
 <div id="fig-caption">
-  <b>Figure 6B -</b> Mean estimates (circles) and corresponding 95% confidence intervals (horizontal lines). Moderators are acoustic indices (Index), biodiversity metrics (Bio), environment (Environment) and acoustic source (Source). Each estimate corresponds to the additive effect when a moderator level is replaced in the intercept (e.g. ADI is the additive effect of ADI when ADI is put as intercept instead of ACI). Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero.
+  <b>Figure 6B -</b> 
+  Mean estimates (circles) and corresponding 95% confidence intervals (horizontal lines) represented as Pearson correlation (r) effect sizes. Each estimate (except the intercept) corresponds to the additive effect of each coefficient as obtained with the predict_rma function from metafor R package. Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero. Moderators are acoustic indices (Index), diversity metrics (Bio), environment (Environment) and acoustic source (Source). 
 </div>
 
 <br>
@@ -611,7 +620,7 @@ ggplot(data = df_pred, aes(x = z2r(estimate), y = coef,
 We checked if our choice of moderators explained some of the variation in our effects sizes by  computing a Wald-type test on the null hypothesis that moderator levels' estimates are jointly equal to zero [@viechtbauer2015comparison]. 
 
 <div id="fig-caption">
-  <b>Supplementary Table 10 -</b> Wald-type tests for all moderators (first row), and for each moderator separately (remaining rows). "Q" is the Wald statistic; "df" are the degrees of freedom; and "p" is the probability that moderator estimates came from a chi-square distribution, where all estimates are equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis that moderator levels estimates are equal to zero (i.e. they do not explain variation in effect sizes).
+  <b>Table S9 -</b> Wald-type tests for all moderators (first row), and for each moderator separately (remaining rows). "Q" is the Wald statistic; "df" are the degrees of freedom; and "p" is the probability that moderator estimates came from a chi-square distribution, where all estimates are equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis that moderator levels estimates are equal to zero (i.e. they do not explain variation in effect sizes).
 </div>
 ```{r test_moderators}
 imp_mods <- matrix(nrow = length(mods) + 1, ncol = 4, 
@@ -634,7 +643,7 @@ imp_mods <- mutate_if(imp_mods, is.numeric, round, 3)
 pander(imp_mods)
 ```
 
-We found that the acoustic indices explained most of the variation in our full model. Hence, this suggests that acoustic indices are not equally performing when it comes to estimate biodiversity. 
+We found that acoustic indices explained most of the variation in our full model. Hence, this suggests that acoustic indices are not equally performing when it comes to biodiversity estimation. 
 
 <br>
 
@@ -653,7 +662,7 @@ The pairwise comparisons for H index suggest that the H index correlates better 
 <br>
 
 <div id="fig-caption">
-  <b>Supplementary Table 11 -</b> Wald-type tests for the contrasts between acoustic index H with all other acoustic indices. The column "Compared" expresses the difference between the estimate H and the estimate of each of the other acoustic indices. The column "Estimate" is the estimate obtained from the difference expressed in the previous column; "SE" is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively; "QM" is the Wald statistic; "p" is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the H index and the estimate of the other index.
+  <b>Table S10 -</b> Wald-type tests for the contrasts between acoustic index H with all other acoustic indices. The column "Compared" expresses the difference between the estimate H and the estimate of each of the other acoustic indices. The column "Estimate" is the estimate obtained from the difference expressed in the previous column; "SE" is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively; "QM" is the Wald statistic; "p" is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the H index and the estimate of the other index.
 </div>
 ```{r compare_indices_H}
 # Test differences between H and other indices
@@ -670,7 +679,7 @@ The pairwise comparison for NDSI index suggest that the NDSI index correlates be
 <br> 
 
 <div id="fig-caption">
-  <b>Supplementary Table 12 -</b> Wald-type tests for the contrasts between acoustic index NDSI with all other acoustic indices. The column "Compared" expresses the difference between the estimate NDSI and the estimate of each of the other acoustic indices. The column "Estimate" is the estimate obtained from the difference expressed in the previous column; "SE" is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively; "QM" is the Wald statistic; "p" is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the NDSI index and the estimate of the other index.
+  <b>Table S11 -</b> Wald-type tests for the contrasts between acoustic index NDSI with all other acoustic indices. The column "Compared" expresses the difference between the estimate NDSI and the estimate of each of the other acoustic indices. The column "Estimate" is the estimate obtained from the difference expressed in the previous column; "SE" is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively; "QM" is the Wald statistic; "p" is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the NDSI index and the estimate of the other index.
 </div>
 ```{r compare_indices_NDSI}
 # Test differences between NDSI and other indices
@@ -681,14 +690,14 @@ kable(NDSI_comp, format = "html", digits = 3) %>%
 
 ##### **Biodiversity metrics pairwise comparisons**
 
-Since abundance of sounds measures seemed to be related with a best performance of the acoustic indices ability to correlate with biodiversity, we use abundance of sounds to compute pairwise comparisons with the other diversity metrics.
+Since using abundance of sounds as a diversity metric seemed to be related with a better correlation between acoustic indices and biodiversity, we use abundance of sounds to compute pairwise comparisons with the other diversity metrics.
 
 The pairwise comparison for abundance of sounds gave marginal support (at p < 0.05) for the null hypothesis of no difference between abundance of sounds and other diversity metrics.
 
 <br>
 
 <div id="fig-caption">
-  <b>Supplementary Table 13 -</b> Wald-type tests for the contrasts between the diversity metric abundance of sounds with all other diversity metrics. The column “Compared” expresses difference between the estimate abundance of sounds and the estimate of each of the other diversity metrics. The column “Estimate” is the estimate obtained from the difference expressed in the previous column; “SE” is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively; “QM” is the Wald statistic; “p” is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the abundance sounds metric and the estimate of the other metric.
+  <b>Table S12 -</b> Wald-type tests for the contrasts between the diversity metric abundance of sounds with all other diversity metrics. The column “Compared” expresses difference between the estimate abundance of sounds and the estimate of each of the other diversity metrics. The column “Estimate” is the estimate obtained from the difference expressed in the previous column; “SE” is the standard error of the difference, and CI.lb, CI.up the confidence interval lower and upper bound, respectively; “QM” is the Wald statistic; “p” is the probability that the difference between estimates is equal to zero. Thus, a p-value < 0.05 gives support against the null hypothesis of no difference between the estimate of the abundance sounds metric and the estimate of the other metric.
 </div>
 ```{r compare_bio}
 # Test difference between sound_abundance and other bio levels
@@ -708,7 +717,7 @@ We assessed publication bias both, visually (with funnel plots) and statisticall
 
 A funnel plot usually shows the relationship between effect sizes and standard errors. In a symmetric funnel plot, the dispersion of effect sizes should get narrower as standard error decreases. 
 
-Due to the multilevel structure of our dataset, we used meta-analytic residuals instead of effect sizes to reduce the effect of independence assumptions. We should consider publication bias as an issue if residuals are outside the expected symmetry of the funnel shape, and if some of the funnel sections do not contain any residual. 
+Due to the multilevel structure of our data set, we used meta-analytic residuals instead of effect sizes to reduce the effect of independence assumptions. We should consider publication bias as an issue if residuals are outside the expected symmetry of the funnel shape, and if some of the funnel sections do not contain any residual. 
 
 To statistically test for funnel plot symmetry, we used Egger’s regression with no intercept. A non-significant inverse variance weighted regression of the residuals over the standard error, indicates that the deviation of the residuals from the funnel plot shape is not greater than what would be expected by chance in a symmetric funnel plot. 
 
@@ -721,8 +730,8 @@ eggers <- regtest(x = resid$resid, sei =sqrt(df_full$var), model = "lm")
 ```{r funnel_plot, fig.width = 10, fig.height = 10}
 funnel(res_full, 
        back = "white", 
-       xlab = "Model Residuals", 
-       ylab = "Std. Error", 
+       xlab = "Model residuals", 
+       ylab = "Effect size standard error", 
        pch = 21,
        col = "darkblue",
        cex = 1.1,
@@ -792,7 +801,7 @@ ggplot(data = df_pseudorep, aes(x = pseudoreplication, y = z2r(z))) +
 
 <br> 
 
-We failed to find differences between the estimates of pseudoreplicated and non-pseudoreplicated designs. Thus, we believe that our adjustment of sample sizes, was a sufficient treatment for pseudoreplication in our meta-analysis.
+We failed to find differences between the estimates of pseudoreplicated and non-pseudoreplicated designs. Thus, in general, pseudoreplicated studies provided effect sizes similar to non-pseudoreplicated studies.
 
 ## Outliers
 
@@ -818,24 +827,26 @@ df_cooks$authors <- str_remove(df_cooks$authors, "^\\s")
 df_cooks <- df_cooks %>%
               filter(!duplicated(authors)) %>%
               arrange(authors)
+df_cooks$authors <- author_format(df_cooks$authors)
 
 ggplot(data = df_cooks, aes(x = authors, y = cooks_dist, group = 1)) + 
   geom_point(color = "deepskyblue4") +
   geom_line(color = "deepskyblue4") + 
   geom_segment(aes(xend=authors), yend = 0, color = "darkgrey", linetype = 2) + 
   geom_hline(yintercept = mean(cooks_dist), color = "darkred", linetype = 2) + 
-  xlab("Studies") + ylab("Cook's Distance") + 
+  xlab("Studies") + ylab("Cook\u2019s distance") + 
   scale_x_discrete(limits = rev(df_cooks$authors)) + 
   theme_minimal() + 
   theme(
-        axis.text = element_text(color = "black"),
         axis.line = element_line(color = "black"),
+        axis.text.y = element_markdown(color = "black"),
+        axis.text.x = element_text(color = "black", size = 8),
   ) + 
   coord_flip() 
 
 ```
 <div id="fig-caption">
-<b>Supplementary Figure 4 -</b> Cook's distance values for each study (blue dots) and average Cook's distance over all studies (dashed vertical red line). The Cook's distance for a given study can be interpreted as the distance between the entire set of predicted values once with this study included and once with this study excluded from the model fitting procedure. On the y-axis are the studies identified by first author and year. The x-axis corresponds to the Cook's distance values.
+<b>Figure S5 -</b> Cook's distance values for each study (blue dots) and average Cook's distance over all studies (dashed vertical red line). The Cook's distance for a given study can be interpreted as the distance between the entire set of predicted values once with this study included and once with this study excluded from the model fitting procedure. On the y-axis are the studies identified by first author and year. The x-axis corresponds to the Cook's distance values.
 </div>
 
 ### Check outlier studies
@@ -865,20 +876,20 @@ ggplot(data = df_outliers, aes(x = z2r(z), y = id)) +
 
 ```
 <div id="fig-caption">
-<b>Supplementary Figure 5 -</b> Boxplot and distribution of effect size values (dots) of the two studies identified as outliers. The y-axis identifies the study, and the x-axis corresponds to the Pearson r effect size. The green vertical dashed line is the summary effect obtained in the intercept-only model.
+<b>Figure S6 -</b> Boxplot and distribution of effect size values (dots) of the two studies identified as outliers. The y-axis identifies the study, and the x-axis corresponds to the Pearson r effect size. The green vertical dashed line is the summary effect obtained in the intercept-only model.
 </div>
 
 <br>
 
-Both outlier studies used birds as the organism of study, and assessed multiple acoustic indices (@gage2017acoustic examined ACI, ADI, AEI, BIO, H, NDSI indices; and @mammides2017acoustic examined ACI, ADI, AEI, AR, BIO, H, NDSI indices). The main difference was that @gage2017acoustic used acoustic recordings to get biodiversity measures while @mammides2017acoustic relied on non-acoustic sources of biodiversity information.
+Both outlier studies used birds as their studied organism, and assessed multiple acoustic indices (@gage2017acoustic examined ACI, ADI, AEI, BIO, H, NDSI indices; and @mammides2017acoustic examined ACI, ADI, AEI, AR, BIO, H, NDSI indices). The main difference was that @gage2017acoustic used acoustic recordings to get biodiversity measures while @mammides2017acoustic relied on non-acoustic sources of biodiversity information.
 
-The box plots and effect size dispersion, suggest that the study by @gage2017acoustic contributed over dispersed effect sizes values, including some at the lower and higher ends of the Pearson effect size scale [-1, 1]. 
+The box plots and effect size dispersion, suggest that the study by @gage2017acoustic contributed overdispersed effect sizes values, including some at the lower and higher ends of the Pearson effect size scale [-1, 1]. 
 
-The @mammides2017acoustic study contributed a total 84 effect sizes, also dispersed over a wide range. The number of effect sizes per se (23% of total effect sizes) could be responsible for its high value of Cook's distance.
+The @mammides2017acoustic study contributed a total 84 effect sizes, also dispersed over a wide range. The number of effect sizes *per se* (23% of total effect sizes) could be responsible for its high value of Cook's distance.
 
 ### Removing outlier studies and examining results
 
-We evaluated the robustness of our results by removing the outliers from the dataset and running the meta-regression model without the outlier studies.  
+We evaluated the robustness of our results by removing the outliers from the data set and running the meta-regression model without the outlier studies.
 
 *Meta-analysis with outliers removed*
 <div class="fold o">
@@ -915,8 +926,8 @@ ggplot(data = df_examine_outliers, aes(x = estimate, y = coef, color = df, posit
     geom_errorbarh(aes(xmin = ci.lb, xmax = ci.ub), height = 0, position = pd, size = 0.8) + 
     geom_vline(xintercept = 0, linetype = 1, color = "black") + 
     #scale_y_discrete(labels =  rev(y_labels)) +
-    scale_color_manual(values = plt_colors, name = "Dataset", 
-                       labels = c("No outliers", "Full dataset")) + 
+    scale_color_manual(values = plt_colors, name = "Data set", 
+                       labels = c("No outliers", "Full data set")) + 
     geom_hline(yintercept= seq(1, n_rows - 1) + 0.5, linetype = 3, color = "black") + 
     theme_minimal() + 
     xlab("Effect size (r)") +
@@ -932,12 +943,12 @@ ggplot(data = df_examine_outliers, aes(x = estimate, y = coef, color = df, posit
     )
 ```
 <div id="fig-caption">
-<b>Supplementary Figure 6 -</b> Contrast of model estimates obtained with meta-regression analysis over the full dataset (yellow) and over the dataset with outliers removed (blue). Estimates are represented with circles and corresponding 95% confidence intervals with horizontal lines. Each estimate corresponds to the additive effect when a moderator level is replaced in the intercept (e.g. ADI is the additive effect of ADI when ADI is put as intercept instead of ACI). Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero. We considered outliers every study that had a Cook's distance value higher than the mean of all Cook distances. Model moderators were acoustic indices (ADI, AEI, AR, BIO, H, NDSI, with ACI as intercept), diversity metric (Species abundance, Species diversity, Abundance of sounds, with Species richness as intercept), environment (Aquatic, with Terrestrial as intercept), diversity source (Acoustic, with Non-Acoustic as intercept). The solid vertical black line represents a null effect size.
+<b>Figure S7 -</b> Contrast of model estimates obtained with meta-regression analysis over the full data set (yellow) and over the data set with outliers removed (blue). Estimates are represented with circles and corresponding 95% confidence intervals with horizontal lines. Each estimate corresponds to the additive effect when a moderator level is replaced in the intercept (e.g. ADI is the additive effect of ADI when ADI is put as intercept instead of ACI). Estimated effect sizes whose 95% confidence intervals do not overlap zero (black vertical line) indicate a positive correlation between acoustic indices and diversity if they are to the right of zero, or a negative correlation if they are to the left of zero. We considered outliers every study that had a Cook's distance value higher than the mean of all Cook distances. Model moderators were acoustic indices (ADI, AEI, AR, BIO, H, NDSI, with ACI as intercept), diversity metric (Species abundance, Species diversity, Abundance of sounds, with Species richness as intercept), environment (Aquatic, with Terrestrial as intercept), diversity source (Acoustic, with Non-Acoustic as intercept). The solid vertical black line represents a null effect size.
 </div>
 
 <br>
 
-The results are similar with major overlap between confidence intervals, especially for the most conclusive results in the full dataset. It seems that removing outliers tended to generate stronger mean effect size estimates of the correlation between acoustic indices and biodiversity.
+The results are similar with major overlap between confidence intervals, especially for the most conclusive results in the full data set. It seems that removing outliers tended to generate stronger mean effect size estimates of the correlation between acoustic indices and biodiversity.
 
 *Heterogeneity for the intercept-only model with no outliers*
 <div class="fold o">
@@ -952,20 +963,42 @@ sum(Is_no_outliers)
 
 ## Effect size tendencies {.tabset .tabset-pills}
 
-We visually inspected tendencies in the effect size over year of publication, and impact factor of the journal. 
+We visually inspected tendencies in the effect size over the year of publication, and impact factor of the journal. 
 
 ### Publication year
 
-We observed a tendency of effect size values to decrease over the years, which is distinctive from 2007 to 2015. 
+We observed a tendency of effect size values to decrease over the years, which is distinctive from 2007 to 2015 and 2015-2019, where the latter period saw a surge in the number of published studies. 
 
+<div class="fold o">
 ```{r effect_size_year}
+lin <- rma.mv(z, var, random = ~ 1 | id/entry, mods = ~ year, data = df_tidy)
+lin
+
+#print(z2r(coefficients(lin)))
+#print(z2r(lin$ci.lb))
+#print(z2r(lin$ci.ub))
+```
+</div>
+
+```{r effect_size_year_plt}
 plt_color <- "darkorchid4"
+
+preds <- predict(lin, interval = "confidence")
+df_tidy$y <- z2r(preds$pred)
+df_tidy$ymin <- z2r(preds$ci.lb)
+df_tidy$ymax<- z2r(preds$ci.ub)
+
+xs <- range(df_tidy$year)
+ys <- z2r((cbind(1, xs) %*% lin$b))
+
 ggplot(df_tidy, aes(x = year, y = z2r(z))) + 
+    #geom_segment(aes(x = xs[1], xend = xs[2], y = ys[1], yend = ys[2]), color = plt_color, size = 0.3, linetype = "dashed") + 
     geom_jitter(aes(size = n), shape = 21, 
                 fill = alpha(plt_color, 0.5), 
                 color = plt_color) + 
     geom_hline(yintercept=0, linetype = 2) +
-    geom_smooth(method='lm', color = plt_color) +
+    geom_line(aes(y = y, x = year), color = plt_color) + 
+    geom_ribbon(aes(ymin = ymin, ymax = ymax), alpha = 0.3) +
     labs(y = "Effect size (r)", x = "Publication Year") +  
     scale_x_continuous(breaks = seq(min(df_tidy$year), 
                                     max(df_tidy$year), by = 2)) +
@@ -976,25 +1009,41 @@ ggplot(df_tidy, aes(x = year, y = z2r(z))) +
         axis.title = element_text(color = "black", size = 14),
         legend.position = "none"
     )
+
 ```
 <div id="fig-caption">
-<b>Figure 8A -</b> Relation between effect size mean values (circles) and publication year. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the publication year axis with minor random noise to reduce overlapping.
+<b>Figure 8A -</b> Relationship between effect size mean values (circles) and publication year after 2015 (inclusive). Circle size indicates the relative sample size for each effect size. The fitted line is a meta-regression over the year of publication with the corresponding 95% confidence interval region shaded grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the impact factor axis with minor random noise to reduce overlapping. Model statistics in Pearson correlation <i>r</i> estimate [CI], intercept 1.000 [1.000, 1.000], slope -0.109 [-0.153, -0.064]. The computed model is a linear model using Fisher’s Z as effect size. The transformation from Fisher’s Z unbounded values to Pearson correlation values bounded between -1 and 1 creates the curved pattern for larger effect sizes. 
 </div>
 
 ### Publication year > 2015
 
 The tendency continues less pronounced from 2015 to 2019. As our knowledge on acoustic indices progresses, larger limitations on the capacity of these tools to efficiently quantify local biodiversity are revealed. Thus, together with the rapid spread of these indices, additional efforts are required to better understand the significance, interpretation, and efficient use of these indices in biodiversity appraisal (Gasc et al., 2015)
 
-```{r effect_size_year_gt_2015}
+<div class="fold o">
+```{r effect_size_gt_2015}
 df_tidy_after2015 <- df_tidy[df_tidy$year >= 2015, ]
+lin <- rma.mv(z, var, random = ~ 1 | id/entry, mods = ~ year, data = df_tidy_after2015)
+lin
+#print(z2r(coefficients(lin)))
+#print(z2r(lin$ci.lb))
+#print(z2r(lin$ci.ub))
+```
+</div>
+
+```{r effect_size_year_gt_2015_plt}
+preds <- predict(lin, interval = "confidence")
+df_tidy_after2015$y <- z2r(preds$pred)
+df_tidy_after2015$ymin <- z2r(preds$ci.lb)
+df_tidy_after2015$ymax<- z2r(preds$ci.ub)
 
 ggplot(df_tidy_after2015, aes(x = year, y = z2r(z))) + 
     geom_jitter(aes(size = n), shape = 21, 
                 fill = alpha(plt_color, 0.5), 
                 color = plt_color) + 
     geom_hline(yintercept=0, linetype = 2) +
-    geom_smooth(method='lm', color = plt_color) +
-    labs(y = "Effect size (r)", x = "Publication Year") +  
+    geom_line(aes(y = y, x = year), color = plt_color) + 
+    geom_ribbon(aes(ymin = ymin, ymax = ymax), alpha = 0.3) +
+    labs(y = expression(paste("Effect size (", italic("r"), ")")), x = "Publication Year") +  
     scale_x_continuous(limits = c(2015, 2019),
                        breaks = seq(min(df_tidy_after2015$year), 
                                     max(df_tidy_after2015$year), 
@@ -1006,24 +1055,43 @@ ggplot(df_tidy_after2015, aes(x = year, y = z2r(z))) +
         axis.title = element_text(color = "black", size = 14),
         legend.position = "none"
     )
+
 ```
 <div id="fig-caption">
-<b>Figure 8B -</b> Relation between effect size mean values (circles) and publication year after 2015 (inclusive) where there is a sudden and prominent rise of publications. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the publication year axis with minor random noise to reduce overlapping.
+<b>Figure 8B -</b> Relationship between effect size mean values (circles) and publication year after 2015 (inclusive). Circle size indicates the relative sample size for each effect size. The fitted line is a meta-regression over the year of publication with the corresponding 95% confidence interval region shaded grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the impact factor axis with minor random noise to reduce overlapping. Model statistics in Pearson correlation <i>r</i> estimate [CI], intercept 1.000 [-0.289, 1.000], slope -0.081 [-0.162, 0.000]. 
 </div>
 
 ### Impact factor
 
 Effect size values do not appear to exhibit a tendency when it comes to journal impact factor.
 
+<div class="fold o">
 ```{r effect_size_impact_factor}
+df_tidy_if <- filter(df_tidy, !is.na(impact_factor))
+lin <- rma.mv(z, var, random = ~ 1 | id/entry, mods = ~ impact_factor, data = df_tidy_if)
+lin
+
+print(z2r(coefficients(lin)))
+print(z2r(lin$ci.lb))
+print(z2r(lin$ci.ub))
+```
+</div>
+
+```{r effect_size_impact_factor_plt}
+preds <- predict(lin, interval = "confidence")
+df_tidy_if$y <- z2r(preds$pred)
+df_tidy_if$ymin <- z2r(preds$ci.lb)
+df_tidy_if$ymax<- z2r(preds$ci.ub)
+
 plt_color <- "deeppink4"
-ggplot(df_tidy, aes(x = impact_factor, y = z2r(z))) + 
+ggplot(df_tidy_if, aes(x = impact_factor, y = z2r(z))) + 
   geom_jitter(aes(size = n), shape = 21, 
               fill = alpha(plt_color, 0.5), 
               color = plt_color,
               width = 0.2) + 
     geom_hline(yintercept=0, linetype = 2) +
-    geom_smooth(method='lm', color = plt_color) +
+    geom_line(aes(y = y, x = impact_factor), color = plt_color) + 
+    geom_ribbon(aes(ymin = ymin, ymax = ymax), alpha = 0.3) +
     labs(y = "Effect size (r)", x = "Impact Factor") +  
     theme_minimal() +
     theme(
@@ -1032,9 +1100,10 @@ ggplot(df_tidy, aes(x = impact_factor, y = z2r(z))) +
         axis.title = element_text(color = "black", size = 14),
         legend.position = "none"
     )
+
 ```
 <div id="fig-caption">
-<b>Supplementary Figure 7 -</b> Relation between effect size mean values (circles) and journal impact factor. Circle size indicates the relative sample size of each effect size. The fitted line is a simple least squares regression with the corresponding 95% confidence interval region in grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the impact factor axis with minor random noise to reduce overlapping.
+<b>Figure S4 -</b> Relationship between effect size mean values (circles) and journal impact factor. Circle size indicates the relative sample size for each effect size. The fitted line is a meta-regression over the journal impact factor with the corresponding 95% confidence interval region shaded grey. The dashed horizontal line represents an effect size of 0. Effect size mean values are positioned along the impact factor axis with minor random noise to reduce overlapping. Model statistics in Pearson correlation <i>r</i> estimate [CI], intercept 0.401 [0.100, 0.164], slope -0.012 [-0.102, 0.077]. 
 </div>
 
 # Supplementary data
