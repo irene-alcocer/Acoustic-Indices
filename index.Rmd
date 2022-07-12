@@ -1,6 +1,6 @@
 ---
 title: "Acoustic indices as proxies for biodiversity: a meta-analysis"
-subtitle: "Supplementary material"
+subtitle: "Web supplementary material"
 author: "Irene Alcocer, Herlander Lima, Larissa SM Sugai, and Diego Llusia"  
 output:
         html_document:
@@ -20,7 +20,8 @@ csl: "biological-reviews.csl"
 ---
 
 ```{r, include = FALSE}
-    knitr::opts_chunk$set(cache = FALSE, warning = FALSE, message = FALSE)
+    knitr::opts_chunk$set(cache = FALSE, warning = FALSE, message = FALSE,
+                          fig.align = "center")
 ```
 
 ```{r, warning = FALSE, message = FALSE, results = "hide", cache = FALSE}
@@ -734,7 +735,9 @@ funnel(res_full,
        ylab = "Effect size standard error", 
        pch = 21,
        col = "darkblue",
-       cex = 1.1,
+       cex = 1.2,
+       cex.lab = 1.3,
+       cex.axis = 1.1,
        lwd = 2
 )
 # Put eggers regression results on funnel plot
@@ -811,7 +814,7 @@ We considered a study an outlier if its Cook’s distance was higher than the av
 
 ### Cook's distance
 
-```{r cooks_dist_study, fig.height = 11}
+```{r cooks_dist_study, fig.height = 9, fig.width = 10}
 ### Cook's distances for each study!
 
 cooks_dist <- cooks.distance(res_full, cluster=df_full$id)
@@ -839,8 +842,10 @@ ggplot(data = df_cooks, aes(x = authors, y = cooks_dist, group = 1)) +
   theme_minimal() + 
   theme(
         axis.line = element_line(color = "black"),
-        axis.text.y = element_markdown(color = "black"),
-        axis.text.x = element_text(color = "black", size = 8),
+        axis.text.y = element_markdown(color = "black", size = 12),
+        axis.title.y = element_markdown(color = "black", size = 16),
+        axis.text.x = element_text(color = "black", size = 12),
+        axis.title.x = element_markdown(color = "black", size = 16),
   ) + 
   coord_flip() 
 
@@ -870,6 +875,7 @@ ggplot(data = df_outliers, aes(x = z2r(z), y = id)) +
     axis.title.y = element_blank(),
     axis.text.y = element_text(size = 11, color = "black"),
     axis.text.x = element_text(size = 11, color = "black"),
+    axis.title.x = element_text(size = 13),
     axis.line.x = element_line(color = "black"),
     legend.position = "none"
   )
@@ -905,7 +911,7 @@ res_no_outliers
 ```
 </div>
 
-```{r viz_compare_res_no_outliers}
+```{r viz_compare_res_no_outliers, fig.align = "center"}
 # With outliers results from full model results 
 df_pred$df <- "with_outliers"
 # No outliers resuls in dataframe
@@ -1071,9 +1077,9 @@ df_tidy_if <- filter(df_tidy, !is.na(impact_factor))
 lin <- rma.mv(z, var, random = ~ 1 | id/entry, mods = ~ impact_factor, data = df_tidy_if)
 lin
 
-print(z2r(coefficients(lin)))
-print(z2r(lin$ci.lb))
-print(z2r(lin$ci.ub))
+#print(z2r(coefficients(lin)))
+#print(z2r(lin$ci.lb))
+#print(z2r(lin$ci.ub))
 ```
 </div>
 
